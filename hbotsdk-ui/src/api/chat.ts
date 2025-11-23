@@ -8,6 +8,9 @@ export interface ChatMessage {
   content: string
   timestamp: number
   status?: 'loading' | 'updating' | 'done' | 'error'
+  duration?: number // 耗时（毫秒）
+  image?: string // 图片URL或Data URL
+  audioUrl?: string // 语音播放地址
 }
 
 export interface ChatRequestParams {
@@ -39,9 +42,10 @@ export async function streamChat(
     formData.append('file', params.file)
   }
 
-  // 获取后端 API 地址，默认使用相对路径
-  // 注意：后端 context-path 是 /api，所以完整路径是 /api/bailing/stream-chat-with-files
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
+  // 获取后端 API 地址，开发环境使用相对路径由 Vite 代理处理
+  // 生产环境使用环境变量配置的完整路径
+  const isDev = import.meta.env.DEV
+  const apiBaseUrl = isDev ? '' : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080')
   const url = `${apiBaseUrl}/api/bailing/stream-chat-with-files`
 
   // 使用 fetch 来处理 POST 请求和流式响应（SSE）
@@ -78,9 +82,9 @@ export async function streamChat(
           if (buffer.trim()) {
             const lines = buffer.split('\n')
             for (const line of lines) {
-              if (line.startsWith('data: ')) {
+              if (line.startsWith('data:')) {
                 try {
-                  const data = JSON.parse(line.slice(6))
+                  const data = JSON.parse(line.slice(5).trim())
                   onMessage({
                     type: currentEvent || data.type || 'message',
                     data,
@@ -88,8 +92,8 @@ export async function streamChat(
                 } catch (e) {
                   console.error('Failed to parse SSE data:', e, line)
                 }
-              } else if (line.startsWith('event: ')) {
-                currentEvent = line.slice(7).trim()
+              } else if (line.startsWith('event:')) {
+                currentEvent = line.slice(6).trim()
               }
             }
           }
@@ -109,18 +113,17 @@ export async function streamChat(
           let dataStr = ''
 
           for (const line of lines) {
-            if (line.startsWith('event: ')) {
-              eventType = line.slice(7).trim()
+            if (line.startsWith('event:')) {
+              eventType = line.slice(6).trim()
               currentEvent = eventType
-            } else if (line.startsWith('data: ')) {
-              dataStr = line.slice(6)
+            } else if (line.startsWith('data:')) {
+              dataStr = line.slice(5).trim()
             }
           }
 
           if (dataStr) {
             try {
               const data = JSON.parse(dataStr)
-              console.log('SSE parsed:', { eventType, data })
               onMessage({
                 type: eventType,
                 data,
