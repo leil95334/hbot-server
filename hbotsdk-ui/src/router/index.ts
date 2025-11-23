@@ -1,0 +1,19 @@
+import { createRouter, createWebHistory } from 'vue-router'
+import Chat from '@/views/Chat.vue'
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: '/',
+      redirect: '/chat',
+    },
+    {
+      path: '/chat',
+      name: 'Chat',
+      component: Chat,
+    },
+  ],
+})
+
+export default router
