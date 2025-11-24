@@ -106,7 +106,7 @@
           <button class="ocr-modal-close" type="button" @click="closeOcrPanel" aria-label="关闭 OCR 面板">
             ×
           </button>
-          <OcrView />
+          <OcrPanel />
         </div>
       </transition>
     </teleport>
@@ -128,7 +128,7 @@ import {
 } from '@/utils/storage'
 import ChatSidebar from '@/components/chat/ChatSidebar.vue'
 import ChatMessageList from '@/components/chat/ChatMessageList.vue'
-import OcrView from './Ocr.vue'
+import OcrPanel from '@/components/OcrPanel.vue'
 
 // 配置
 // OCR 智能体使用环境中的 VITE_APP_ID（原有配置）
@@ -854,7 +854,7 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px 24px;
+  padding: 0;
 }
 
 .ocr-modal-close {
@@ -879,12 +879,13 @@ onBeforeUnmount(() => {
 }
 
 .ocr-modal-overlay :deep(.ocr-page) {
-  max-width: 1200px;
-  width: 100%;
-  max-height: 95vh;
-  overflow: auto;
-  border-radius: 32px;
-  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.3);
+  width: 50vw;
+  height: 50vh;
+  max-width: 50vw;
+  max-height: 50vh;
+  overflow: hidden;
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
 }
 
 .ocr-modal-fade-enter-active,
