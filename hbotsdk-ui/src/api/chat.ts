@@ -28,11 +28,16 @@ export interface StreamEvent {
 /**
  * 流式聊天请求
  */
+interface StreamChatOptions {
+  endpoint?: string
+}
+
 export async function streamChat(
   params: ChatRequestParams,
   onMessage: (event: StreamEvent) => void,
   onError: (error: Error) => void,
-  onComplete: () => void
+  onComplete: () => void,
+  options?: StreamChatOptions
 ): Promise<() => void> {
   const formData = new FormData()
   formData.append('appId', params.appId)
@@ -42,11 +47,9 @@ export async function streamChat(
     formData.append('file', params.file)
   }
 
-  // 获取后端 API 地址，开发环境使用相对路径由 Vite 代理处理
-  // 生产环境使用环境变量配置的完整路径
-  const isDev = import.meta.env.DEV
-  const apiBaseUrl = isDev ? '' : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080')
-  const url = `${apiBaseUrl}/api/bailing/stream-chat-with-files`
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
+  const endpoint = options?.endpoint ?? '/api/bailing/stream-chat-with-file'
+  const url = `${apiBaseUrl}${endpoint}`
 
   // 使用 fetch 来处理 POST 请求和流式响应（SSE）
   const controller = new AbortController()

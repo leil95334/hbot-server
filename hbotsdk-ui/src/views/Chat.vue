@@ -1,193 +1,35 @@
 <template>
   <div class="chat-layout">
-    <!-- 侧边栏 -->
-    <div class="chat-sider">
-      <!-- Logo -->
-      <div class="logo">
-        <img
-          src="https://mdn.alipayobjects.com/huamei_iwk9zp/afts/img/A*eco6RrQhxbMAAAAAAAAAAAAADgCCAQ/original"
-          alt="logo"
-          width="24"
-          height="24"
-        />
-        <span>Hbot SDK</span>
-      </div>
-
-      <!-- 新建会话按钮 -->
-      <div class="new-conversation-btn">
-        <a-button
-          type="primary"
-          block
-          class="new-chat-btn"
-          @click="handleNewConversation"
-        >
-          <div class="new-chat-btn-inner">
-            <div class="new-chat-left">
-              <span class="new-chat-icon">
-                <PlusOutlined />
-              </span>
-              <span class="new-chat-text">新会话</span>
-            </div>
-          </div>
-        </a-button>
-      </div>
-
-      <!-- 会话列表 -->
-      <div class="conversations">
-        <a-list
-          :data-source="conversations"
-          class="conversation-list"
-        >
-          <template #renderItem="{ item }">
-            <a-list-item
-              :key="item.key"
-              :class="{ 'active': item.key === activeConversationKey }"
-              @click="handleConversationClick(item.key)"
-            >
-              <a-list-item-meta>
-                <template #title>
-                  <div class="conversation-title">
-                    <span class="title-text">{{ item.label }}</span>
-                    <span class="message-preview">{{ getLastMessagePreviewFn(item.messages) }}</span>
-                  </div>
-                </template>
-              </a-list-item-meta>
-              <template #actions>
-                <a-dropdown :trigger="['click']">
-                  <a-button type="text" size="small" @click.stop>
-                    <template #icon>
-                      <EllipsisOutlined />
-                    </template>
-                  </a-button>
-                  <template #overlay>
-                    <a-menu>
-                      <a-menu-item key="rename" @click="handleRename(item)">
-                        <template #icon><EditOutlined /></template>
-                        重命名
-                      </a-menu-item>
-                      <a-menu-item key="delete" danger @click="handleDelete(item)">
-                        <template #icon><DeleteOutlined /></template>
-                        删除
-                      </a-menu-item>
-                    </a-menu>
-                  </template>
-                </a-dropdown>
-              </template>
-            </a-list-item>
-          </template>
-        </a-list>
-      </div>
-
-      <!-- 底部 -->
-      <div class="side-footer">
-        <a-avatar :size="24" />
-        <a-button type="text" :icon="h(QuestionCircleOutlined)" />
-      </div>
-    </div>
+    <ChatSidebar
+      :conversations="conversations"
+      :active-conversation-key="activeConversationKey"
+      @new-conversation="handleNewConversation"
+      @conversation-click="handleConversationClick"
+      @rename="handleRename"
+      @delete="handleDelete"
+    />
 
     <!-- 主聊天区域 -->
     <div class="chat-main">
-      <!-- 消息列表 -->
-      <div class="chat-list" ref="chatListRef">
-        <div v-if="messages.length === 0" class="welcome-container">
-          <a-empty
-            :description="false"
-            :image="false"
-          >
-            <template #image>
-              <img
-                src="https://mdn.alipayobjects.com/huamei_iwk9zp/afts/img/A*s5sNRo5LjfQAAAAAAAAAAAAADgCCAQ/fmt.webp"
-                alt="welcome"
-                style="width: 200px; height: 200px;"
-              />
-            </template>
-            <div class="welcome-content">
-              <h2>你好，我是 Hbot 智能助手</h2>
-              <p>基于 Hbot SDK 的智能对话系统，可以帮你解答问题、提供建议和协助工作。</p>
-            </div>
-          </a-empty>
-        </div>
-
-        <div v-else class="messages-container">
-          <div
-            v-for="message in messages"
-            :key="message.id"
-            :class="['message-item', `message-${message.role}`]"
-          >
-            <div class="message-avatar">
-              <a-avatar v-if="message.role === 'assistant'">
-                <template #icon><RobotOutlined /></template>
-              </a-avatar>
-              <a-avatar v-else>
-                <template #icon><UserOutlined /></template>
-              </a-avatar>
-            </div>
-            <div class="message-content">
-              <div
-                v-if="message.role === 'assistant'"
-                class="message-bubble assistant-bubble"
-                :class="{ 'updating': message.status === 'updating' || message.status === 'loading' }"
-              >
-                <div v-if="message.status === 'loading' || message.status === 'updating'" class="typing-indicator">
-                  <span class="typing-dots">
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                  </span>
-                </div>
-                <div class="markdown-content" v-html="renderMarkdown(message.content)"></div>
-              </div>
-              <div v-else class="message-bubble user-bubble">
-                <!-- 用户消息文本 -->
-                <div v-if="message.content" class="message-text">{{ message.content }}</div>
-                <!-- 用户消息中的图片 -->
-                <div v-if="message.image" class="message-image">
-                  <img :src="message.image" :alt="'用户图片'" />
-                </div>
-              </div>
-              <div v-if="message.role === 'assistant' && message.status === 'done'" class="message-actions">
-                <a-space>
-                  <a-button type="text" size="small" @click="handleCopy(message.content)">
-                    <template #icon><CopyOutlined /></template>
-                    复制
-                  </a-button>
-                  <a-button 
-                    type="text" 
-                    size="small"
-                    :disabled="!message.audioUrl"
-                    @click="playAudio(message)"
-                  >
-                    <template #icon><SoundOutlined /></template>
-                  </a-button>
-                </a-space>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ChatMessageList
+        ref="chatMessageListRef"
+        :messages="messages"
+      />
 
       <!-- 输入区域 -->
       <div class="chat-input">
         <div class="chat-input-container">
           <!-- 小工具栏：OCR / TTS -->
           <div class="tool-bar">
-            <div class="tool-item" @click="handleOcrClick">
-              <a-dropdown trigger="click">
-                <div class="tool-icon" @click.stop>
-                  <svg width="20" height="20" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="currentColor" fill-rule="evenodd">
-                      <path d="M3,4 L29,4 C29.5522847,4 30,4.44771525 30,5 C30,5.55228475 29.5522847,6 29,6 L3,6 C2.44771525,6 2,5.55228475 2,5 C2,4.44771525 2.44771525,4 3,4 Z" />
-                      <path d="M27.0035706,7.0022583 C27.5157162,7.0022583 27.9378187,7.38777894 27.995506,7.88444828 L28.0022247,8.00091245 L27.9999999,15.9999999 C27.9995274,18.7610895 25.7610896,20.9991442 23,20.9991442 L16.9999995,20.9989886 L17,22.5857864 L21.2426407,26.8284271 C21.633165,27.2189514 21.633165,27.8521164 21.2426407,28.2426407 C20.8521164,28.633165 20.2189514,28.633165 19.8284271,28.2426407 L15.914,24.328 L12,28.2426407 C11.639516,28.6031246 11.072285,28.6308542 10.6799938,28.3258293 L10.5857864,28.2426407 C10.1952621,27.8521164 10.1952621,27.2189514 10.5857864,26.8284271 L14.8284271,22.5857864 C14.8813457,22.5328679 14.9387196,22.4871202 14.9993414,22.4485432 L15,21 L9,21 C6.23857625,21 4,18.7614237 4,16 L4,9 C4,8.44771525 4.44771525,8 5,8 C5.55228475,8 6,8.44771525 6,9 L6,16 C6,17.6568542 7.34314575,19 9,19 L23.0047455,19 C24.6615997,19 26.0047455,17.6568542 26.0047455,16 L26.0047455,8.00108337 C26.0047455,7.44944752 26.4519347,7.0022583 27.0035706,7.0022583 Z" />
-                    </g>
-                  </svg>
-                </div>
-                <template #overlay>
-                  <a-menu :selectedKeys="[ocrMode]" @click="handleOcrModeMenuClick">
-                    <a-menu-item key="upload">上传图片</a-menu-item>
-                    <a-menu-item key="screenshot">截图</a-menu-item>
-                  </a-menu>
-                </template>
-              </a-dropdown>
+            <div class="tool-item" role="button" tabindex="0" @click="openOcrPanel" @keyup.enter="openOcrPanel">
+              <div class="tool-icon">
+                <svg width="20" height="20" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                  <g fill="currentColor" fill-rule="evenodd">
+                    <path d="M3,4 L29,4 C29.5522847,4 30,4.44771525 30,5 C30,5.55228475 29.5522847,6 29,6 L3,6 C2.44771525,6 2,5.55228475 2,5 C2,4.44771525 2.44771525,4 3,4 Z" />
+                    <path d="M27.0035706,7.0022583 C27.5157162,7.0022583 27.9378187,7.38777894 27.995506,7.88444828 L28.0022247,8.00091245 L27.9999999,15.9999999 C27.9995274,18.7610895 25.7610896,20.9991442 23,20.9991442 L16.9999995,20.9989886 L17,22.5857864 L21.2426407,26.8284271 C21.633165,27.2189514 21.633165,27.8521164 21.2426407,28.2426407 C20.8521164,28.633165 20.2189514,28.633165 19.8284271,28.2426407 L15.914,24.328 L12,28.2426407 C11.639516,28.6031246 11.072285,28.6308542 10.6799938,28.3258293 L10.5857864,28.2426407 C10.1952621,27.8521164 10.1952621,27.2189514 10.5857864,26.8284271 L14.8284271,22.5857864 C14.8813457,22.5328679 14.9387196,22.4871202 14.9993414,22.4485432 L15,21 L9,21 C6.23857625,21 4,18.7614237 4,16 L4,9 C4,8.44771525 4.44771525,8 5,8 C5.55228475,8 6,8.44771525 6,9 L6,16 C6,17.6568542 7.34314575,19 9,19 L23.0047455,19 C24.6615997,19 26.0047455,17.6568542 26.0047455,16 L26.0047455,8.00108337 C26.0047455,7.44944752 26.4519347,7.0022583 27.0035706,7.0022583 Z" />
+                  </g>
+                </svg>
+              </div>
               <div class="tool-name">OCR</div>
             </div>
             <div class="tool-item">
@@ -230,7 +72,6 @@
 
           <a-input
             :key="chatInputKey"
-            ref="chatInputRef"
             v-model:value="inputValue"
             :placeholder="'向我提问吧...'"
             :disabled="isRequesting"
@@ -238,49 +79,56 @@
             size="large"
           >
             <template #suffix>
-              <a-button
-                type="primary"
-                :loading="isRequesting"
+              <div 
+                class="ds-icon-button send-button"
+                :class="{ 'ds-icon-button--disabled': isRequesting }"
+                :tabindex="isRequesting ? '-1' : '0'"
+                role="button"
+                :aria-disabled="isRequesting"
                 @click="handleSend"
               >
-                发送
-              </a-button>
+                <div class="ds-icon-button__hover-bg"></div>
+                <div class="ds-icon">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.3125 0.981648C8.66767 1.05456 8.97902 1.20565 9.2627 1.4338C9.48724 1.61444 9.73029 1.85939 9.97949 2.1086L14.707 6.83614L13.293 8.2502L9 3.95723V15.0432H7V3.95723L2.70703 8.2502L1.29297 6.83614L6.02051 2.1086C6.26971 1.85939 6.51277 1.61444 6.7373 1.4338C6.97662 1.24132 7.28445 1.04548 7.6875 0.981648C7.8973 0.948471 8.1031 0.956625 8.3125 0.981648Z" fill="currentColor"></path>
+                  </svg>
+                </div>
+              </div>
             </template>
           </a-input>
         </div>
       </div>
     </div>
+
+    <teleport to="body">
+      <transition name="ocr-modal-fade">
+        <div v-if="showOcrModal" class="ocr-modal-overlay" @click.self="closeOcrPanel">
+          <button class="ocr-modal-close" type="button" @click="closeOcrPanel" aria-label="关闭 OCR 面板">
+            ×
+          </button>
+          <OcrView />
+        </div>
+      </transition>
+    </teleport>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick, onMounted, onBeforeUnmount, h } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { message } from 'ant-design-vue'
-import {
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  EllipsisOutlined,
-  QuestionCircleOutlined,
-  RobotOutlined,
-  UserOutlined,
-  CopyOutlined,
-  PictureOutlined,
-  SoundOutlined,
-} from '@ant-design/icons-vue'
-import dayjs from 'dayjs'
 import { streamChat, type ChatMessage, type ChatRequestParams } from '@/api/chat'
-import { marked } from 'marked'
 import { 
   getAllConversations, 
   getConversation,
   saveConversation, 
   deleteConversation, 
   generateConversationTitle, 
-  getLastMessagePreview,
   cleanupOldConversations,
   type ConversationStorage 
 } from '@/utils/storage'
+import ChatSidebar from '@/components/chat/ChatSidebar.vue'
+import ChatMessageList from '@/components/chat/ChatMessageList.vue'
+import OcrView from './Ocr.vue'
 
 // 配置
 // OCR 智能体使用环境中的 VITE_APP_ID（原有配置）
@@ -294,48 +142,38 @@ const conversations = ref<ConversationStorage[]>([])
 const activeConversationKey = ref('')
 const messages = ref<ChatMessage[]>([])
 const inputValue = ref('')
-const chatInputRef = ref<any>(null)
 const chatInputKey = ref(0)
 const isRequesting = ref(false)
-const chatListRef = ref<HTMLElement>()
+type ChatMessageListInstance = InstanceType<typeof ChatMessageList> & {
+  scrollToBottom: () => void
+}
+const chatMessageListRef = ref<ChatMessageListInstance | null>(null)
 const abortController = ref<(() => void) | null>(null)
 const currentFile = ref<File | null>(null)
 const filePreviewUrl = ref<string>('')
 const requestStartTime = ref<number>(0)
-const currentAudio = ref<HTMLAudioElement | null>(null)
-const currentAudioMessageId = ref<string | null>(null)
 const ocrFileInputRef = ref<HTMLInputElement | null>(null)
 const isOcrFlow = ref(false)
 const ocrMode = ref<'upload' | 'screenshot'>('upload')
+const showOcrModal = ref(false)
+const openOcrPanel = () => {
+  showOcrModal.value = true
+}
+
+const closeOcrPanel = () => {
+  showOcrModal.value = false
+}
+
+watch(showOcrModal, (visible) => {
+  document.body.style.overflow = visible ? 'hidden' : ''
+})
 
 // 计算属性
 const currentConversation = computed(() => {
   return conversations.value.find(c => c.key === activeConversationKey.value)
 })
 
-// 工具函数
-const formatDuration = (ms: number): string => {
-  if (ms < 1000) {
-    return `${ms}ms`
-  } else if (ms < 60000) {
-    return `${(ms / 1000).toFixed(1)}s`
-  } else {
-    const minutes = Math.floor(ms / 60000)
-    const seconds = ((ms % 60000) / 1000).toFixed(1)
-    return `${minutes}m ${seconds}s`
-  }
-}
 
-// 获取文件类型
-const getFileType = (filename: string): string => {
-  const ext = filename.split('.').pop()?.toUpperCase() || 'FILE'
-  return ext
-}
-
-// 暴露storage函数到模板
-const getLastMessagePreviewFn = getLastMessagePreview
-
-// 方法
 // 加载会话历史
 const loadConversations = () => {
   cleanupOldConversations() // 清理30天前的会话
@@ -359,7 +197,10 @@ const loadConversations = () => {
     conversations.value = savedConversations
     // 按创建时间排序，最新的在前
     conversations.value.sort((a, b) => b.createdAt - a.createdAt)
-    activeConversationKey.value = conversations.value[0].key
+    const latestConversation = conversations.value[0]
+    if (latestConversation) {
+      activeConversationKey.value = latestConversation.key
+    }
   }
   
   // 加载当前会话的消息
@@ -400,7 +241,7 @@ const saveCurrentConversation = () => {
 }
 
 // 流式保存防抖
-let streamingSaveTimer: NodeJS.Timeout | null = null
+let streamingSaveTimer: ReturnType<typeof setTimeout> | null = null
 const debouncedSaveDuringStreaming = () => {
   if (streamingSaveTimer) {
     clearTimeout(streamingSaveTimer)
@@ -473,8 +314,11 @@ const handleDelete = (item: ConversationStorage) => {
     if (item.key === activeConversationKey.value) {
       // 如果删除的是当前会话，切换到第一个会话或创建新会话
       if (conversations.value.length > 0) {
-        activeConversationKey.value = conversations.value[0].key
-        loadCurrentConversationMessages()
+        const nextConversation = conversations.value[0]
+        if (nextConversation) {
+          activeConversationKey.value = nextConversation.key
+          loadCurrentConversationMessages()
+        }
       } else {
         // 如果没有会话了，创建新会话
         handleNewConversation()
@@ -514,22 +358,6 @@ const handleFileUpload = (file: File) => {
 const clearFilePreview = () => {
   currentFile.value = null
   filePreviewUrl.value = ''
-}
-
-// OCR 工具点击：根据模式执行上传图片或引导截图粘贴
-const handleOcrClick = () => {
-  if (isRequesting.value) {
-    message.warning('请求正在进行中，请等待当前请求完成')
-    return
-  }
-  if (ocrMode.value === 'upload') {
-    if (ocrFileInputRef.value) {
-      ocrFileInputRef.value.value = ''
-      ocrFileInputRef.value.click()
-    }
-  } else {
-    message.info('已进入截图模式，请使用系统截图工具截取区域后，回到此页面按 Ctrl+V 粘贴图片')
-  }
 }
 
 // OCR 文件通用处理逻辑
@@ -621,9 +449,6 @@ const handleSend = async () => {
   const image = filePreviewUrl.value || undefined
   inputValue.value = ''
   chatInputKey.value += 1
-  if (chatInputRef.value && (chatInputRef.value as any).input) {
-    ;(chatInputRef.value as any).input.value = ''
-  }
 
   // 添加用户消息
   const userMessage: ChatMessage = {
@@ -673,23 +498,24 @@ const handleSend = async () => {
         const text = event.data.payload.text as string
 
         const messageIndex = messages.value.findIndex(m => m.id === assistantMessageId)
+        const targetMessage = messageIndex !== -1 ? messages.value[messageIndex] : null
 
         // 当为语音地址通道时，不累积到 content，而是写入 audioUrl
         if (lane === 'output_h0uzga_text_1') {
-          if (messageIndex !== -1) {
-            messages.value[messageIndex].audioUrl = text
+          if (targetMessage) {
+            targetMessage.audioUrl = text
             // 语音地址就绪时，如果之前还是 loading，则标记为 updating 以触发 UI 更新
-            if (!messages.value[messageIndex].content) {
-              messages.value[messageIndex].status = 'updating'
+            if (!targetMessage.content) {
+              targetMessage.status = 'updating'
             }
           }
         } else {
           // 其它通道（包含文字内容）仍然累积到 content
           accumulatedContent += text
           
-          if (messageIndex !== -1) {
-            messages.value[messageIndex].content = accumulatedContent
-            messages.value[messageIndex].status = 'updating'
+          if (targetMessage) {
+            targetMessage.content = accumulatedContent
+            targetMessage.status = 'updating'
           }
         }
 
@@ -702,8 +528,12 @@ const handleSend = async () => {
       console.error('Chat error:', error)
       const messageIndex = messages.value.findIndex(m => m.id === assistantMessageId)
       if (messageIndex !== -1) {
+        const targetMessage = messages.value[messageIndex]
+        if (!targetMessage) {
+          return
+        }
         const duration = Date.now() - requestStartTime.value
-        messages.value[messageIndex].status = 'error'
+        targetMessage.status = 'error'
         
         // 针对413错误提供更友好的提示
         let errorMsg = error.message
@@ -711,8 +541,8 @@ const handleSend = async () => {
           errorMsg = '请求体过大，请检查是否上传了过大的文件（限制10MB）'
         }
         
-        messages.value[messageIndex].content = `错误: ${errorMsg}`
-        messages.value[messageIndex].duration = duration // 错误情况下也保存耗时
+        targetMessage.content = `错误: ${errorMsg}`
+        targetMessage.duration = duration // 错误情况下也保存耗时
       }
       isRequesting.value = false
       isOcrFlow.value = false
@@ -727,9 +557,13 @@ const handleSend = async () => {
     () => {
       const messageIndex = messages.value.findIndex(m => m.id === assistantMessageId)
       if (messageIndex !== -1) {
+        const targetMessage = messages.value[messageIndex]
+        if (!targetMessage) {
+          return
+        }
         const duration = Date.now() - requestStartTime.value
-        messages.value[messageIndex].status = 'done'
-        messages.value[messageIndex].duration = duration // 保存耗时到独立字段
+        targetMessage.status = 'done'
+        targetMessage.duration = duration // 保存耗时到独立字段
       }
       isRequesting.value = false
       // 清理流式保存定时器并最终保存
@@ -745,66 +579,8 @@ const handleSend = async () => {
   scrollToBottom()
 }
 
-const handleCopy = (content: string) => {
-  navigator.clipboard.writeText(content).then(() => {
-    message.success('已复制到剪贴板')
-  })
-}
-
-const playAudio = (msg: ChatMessage) => {
-  if (!msg.audioUrl) {
-    return
-  }
-
-  // 如果当前已经在播放同一条消息，点击则暂停并重置
-  if (currentAudio.value && currentAudioMessageId.value === msg.id) {
-    currentAudio.value.pause()
-    currentAudio.value = null
-    currentAudioMessageId.value = null
-    return
-  }
-
-  // 如果有其他正在播放的音频，先停止
-  if (currentAudio.value) {
-    currentAudio.value.pause()
-    currentAudio.value = null
-    currentAudioMessageId.value = null
-  }
-
-  const audio = new Audio(msg.audioUrl)
-  currentAudio.value = audio
-  currentAudioMessageId.value = msg.id
-
-  audio.play().catch((err) => {
-    console.error('audio play error', err)
-    message.error('语音播放失败，请稍后重试')
-    currentAudio.value = null
-    currentAudioMessageId.value = null
-  })
-
-  audio.onended = () => {
-    currentAudio.value = null
-    currentAudioMessageId.value = null
-  }
-}
-
-
-const renderMarkdown = (content: string) => {
-  if (!content) return ''
-  try {
-    return marked.parse(content) as string
-  } catch (e) {
-    console.error('Markdown render error:', e)
-    return content
-  }
-}
-
 const scrollToBottom = () => {
-  nextTick(() => {
-    if (chatListRef.value) {
-      chatListRef.value.scrollTop = chatListRef.value.scrollHeight
-    }
-  })
+  chatMessageListRef.value?.scrollToBottom()
 }
 
 onMounted(() => {
@@ -826,6 +602,10 @@ onMounted(() => {
     }
   })
 })
+
+onBeforeUnmount(() => {
+  document.body.style.overflow = ''
+})
 </script>
 
 <style scoped lang="less">
@@ -837,152 +617,6 @@ onMounted(() => {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
-.chat-sider {
-  width: 280px;
-  height: 100%;
-  background: #f9fafb;
-  display: flex;
-  flex-direction: column;
-  padding: 0 12px;
-  box-sizing: border-box;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  padding: 0 12px;
-  gap: 8px;
-  margin: 24px 0;
-
-  span {
-    font-weight: bold;
-    color: #000;
-    font-size: 16px;
-  }
-}
-
-.new-conversation-btn {
-  padding: 12px 0;
-}
-
-.new-chat-btn {
-  :deep(.ant-btn) {
-    all: unset;
-  }
-
-  height: 40px;
-  border-radius: 12px;
-  background: #ffffff;
-  color: #1677ff;
-  padding: 0;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
-  cursor: pointer;
-  display: block;
-
-  &:hover {
-    background: #f5f7ff;
-    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.1);
-  }
-
-  &:active {
-    background: #e4edff;
-    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
-  }
-}
-
-.new-chat-btn-inner {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 14px;
-  box-sizing: border-box;
-}
-
-.new-chat-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.new-chat-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.new-chat-text {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.conversations {
-  flex: 1;
-  overflow-y: auto;
-  margin-top: 0;
-}
-
-.conversation-list {
-  :deep(.ant-list-item) {
-    padding: 12px;
-    cursor: pointer;
-    border-radius: 8px;
-    margin-bottom: 4px;
-
-    &:hover {
-      background: #f5f5f5;
-    }
-
-    &.active {
-      background: #e6f7ff;
-    }
-  }
-  
-  .conversation-title {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    
-    .title-text {
-      font-weight: 500;
-      color: #262626;
-      font-size: 14px;
-      line-height: 1.4;
-    }
-    
-    .message-preview {
-      font-size: 12px;
-      color: #8c8c8c;
-      line-height: 1.3;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      max-height: 32px;
-    }
-  }
-}
-
-.new-conversation {
-  padding: 12px;
-  border-top: 1px solid #e8e8e8;
-}
-
-.side-footer {
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
-}
-
 .chat-main {
   flex: 1;
   height: 100%;
@@ -991,187 +625,22 @@ onMounted(() => {
   background: #fff;
 }
 
-.chat-list {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-}
-
-.welcome-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-}
-
-.welcome-content {
-  margin-top: 24px;
-
-  h2 {
-    font-size: 24px;
-    margin-bottom: 12px;
-  }
-
-  p {
-    color: #666;
-    font-size: 14px;
-  }
-}
-
-.messages-container {
-  max-width: 840px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.message-item {
-  display: flex;
-  margin-bottom: 24px;
-  gap: 12px;
-
-  &.message-user {
-    flex-direction: row-reverse;
-
-    .message-content {
-      align-items: flex-end;
-    }
-  }
-}
-
-.message-avatar {
-  flex-shrink: 0;
-}
-
-.message-content {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-}
-
-.message-bubble {
-  padding: 12px 16px;
-  border-radius: 12px;
-  word-wrap: break-word;
-  line-height: 1.6;
-
-  &.assistant-bubble {
-    background: transparent;
-    color: #000;
-  }
-
-  &.user-bubble {
-    background: #f5f5f5;
-    color: #000;
-  }
-}
-
-.typing-indicator {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 0;
-}
-
-.typing-dots {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  
-  .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: #8c8c8c;
-    animation: typing-dot 1.4s infinite ease-in-out;
-    
-    &:nth-child(1) {
-      animation-delay: -0.32s;
-    }
-    
-    &:nth-child(2) {
-      animation-delay: -0.16s;
-    }
-    
-    &:nth-child(3) {
-      animation-delay: 0;
-    }
-  }
-}
-
-@keyframes typing-dot {
-  0%, 80%, 100% {
-    transform: scale(0.8);
-    opacity: 0.5;
-  }
-  40% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.markdown-content {
-  :deep(p) {
-    margin: 0 0 8px 0;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  :deep(ul),
-  :deep(ol) {
-    list-style: none;
-    padding-left: 0;
-    margin: 8px 0;
-  }
-
-  :deep(li) {
-    list-style: none;
-    margin: 4px 0;
-  }
-
-  :deep(code) {
-    background: rgba(0, 0, 0, 0.1);
-    padding: 2px 4px;
-    border-radius: 4px;
-    font-size: 0.9em;
-  }
-
-  :deep(pre) {
-    background: rgba(0, 0, 0, 0.05);
-    padding: 12px;
-    border-radius: 8px;
-    overflow-x: auto;
-    margin: 8px 0;
-
-    code {
-      background: none;
-      padding: 0;
-    }
-  }
-}
-
-.message-actions {
-  display: flex;
-  gap: 8px;
-}
-
 .chat-input {
-  padding: 81px 24px;
+  padding: 10px 24px;
   background: #fff;
   width: 100%;
   box-sizing: border-box;
+  margin-bottom: 40px;
 }
 
 .chat-input-container {
   max-width: 840px;
   width: 100%;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
 
   :deep(.ant-input) {
     border-radius: 24px;
@@ -1182,8 +651,8 @@ onMounted(() => {
 .tool-bar {
   display: flex;
   gap: 12px;
-  margin-top: 20px;
-  margin-bottom: 6px;
+  align-self: flex-start;
+  margin-bottom: 12px;
 }
 
 .tool-item {
@@ -1198,7 +667,7 @@ onMounted(() => {
   color: #4b5563;
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s, transform 0.1s;
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .tool-item:hover {
@@ -1208,6 +677,21 @@ onMounted(() => {
 
 .tool-item:active {
   transform: scale(0.96);
+}
+
+.tool-item--icon-only {
+  cursor: default;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  height: auto;
+}
+
+.tool-item--icon-only:hover,
+.tool-item--icon-only:active {
+  background-color: transparent;
+  color: inherit;
+  transform: none;
 }
 
 .tool-icon {
@@ -1286,23 +770,131 @@ onMounted(() => {
   }
 }
 
-.message-text {
-  word-wrap: break-word;
-  line-height: 1.6;
+.ds-icon-button,
+.send-button {
+  --hover-size: 34px;
+  width: 34px;
+  height: 34px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  color: #1677ff;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  outline: none;
+  
+  &:focus-visible {
+    outline: 2px solid #1677ff;
+    outline-offset: 2px;
+  }
+  
+  &:hover:not(.ds-icon-button--disabled) {
+    background-color: rgba(22, 119, 255, 0.08);
+  }
+  
+  &:active:not(.ds-icon-button--disabled) {
+    transform: scale(0.95);
+    background-color: rgba(22, 119, 255, 0.12);
+  }
+  
+  &.ds-icon-button--disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+    color: #bfbfbf;
+    pointer-events: none;
+  }
 }
 
-.message-image {
-  margin-top: 8px;
-  max-width: 300px;
-  border-radius: 8px;
-  overflow: hidden;
+.ds-icon-button__hover-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--hover-size);
+  height: var(--hover-size);
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ds-icon-button:hover:not(.ds-icon-button--disabled) .ds-icon-button__hover-bg,
+.send-button:hover:not(.ds-icon-button--disabled) .ds-icon-button__hover-bg {
+  background-color: rgba(22, 119, 255, 0.08);
+}
+
+.ds-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
   
-  img {
+  svg {
     width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 8px;
+    height: 100%;
   }
+}
+
+.ocr-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(3px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+}
+
+.ocr-modal-close {
+  position: fixed;
+  top: 28px;
+  right: 28px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  color: #0f172a;
+  font-size: 24px;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 2001;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+
+  &:hover {
+    background: #ffffff;
+  }
+}
+
+.ocr-modal-overlay :deep(.ocr-page) {
+  max-width: 1200px;
+  width: 100%;
+  max-height: 95vh;
+  overflow: auto;
+  border-radius: 32px;
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.3);
+}
+
+.ocr-modal-fade-enter-active,
+.ocr-modal-fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.ocr-modal-fade-enter-from,
+.ocr-modal-fade-leave-to {
+  opacity: 0;
 }
 </style>
 

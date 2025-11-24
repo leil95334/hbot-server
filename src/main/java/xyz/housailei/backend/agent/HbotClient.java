@@ -71,10 +71,10 @@ public class HbotClient {
 
         data.put("stream", chatRequest.getStream());
         if (chatRequest.getStream()) {
-            Iterable<HttpResponseEvent> responseIter = this.httpClient.postStream("/api/chat", data, (Map)null, 110);
+            Iterable<HttpResponseEvent> responseIter = this.httpClient.postStream("/api/chat", data, null, 110);
             return this.stream(responseIter, chatRequest.getMessageParser());
         } else {
-            String responseText = this.httpClient.post("/api/chat", data, (Map)null);
+            String responseText = this.httpClient.post("/api/chat", data, null);
             return new HbotResponse(responseText, new TypeReference<SyncChatResponse>() {
             });
         }

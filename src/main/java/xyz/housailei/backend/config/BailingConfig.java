@@ -7,6 +7,7 @@ import xyz.housailei.backend.agent.HbotClient;
 import xyz.housailei.backend.agent.core.exception.HbotClientConfigException;
 import xyz.housailei.backend.agent.core.http.HttpClientConfig;
 
+
 /**
  * 白凌 SDK 配置
  * 使用统一的 HTTP 客户端配置，支持 HTTP/2 协议
