@@ -9,7 +9,14 @@
             </div>
           </div>
         </header>
-        <div class="dropzone" :class="{ 'has-preview': !!capturedImage }">
+        <div
+          class="dropzone"
+          :class="{ 'has-preview': !!capturedImage }"
+          @paste.prevent="handleDropzonePaste"
+          @dragover.prevent
+          @dragenter.prevent
+          @drop.prevent="handleDropzoneDrop"
+        >
           <template v-if="capturedImage">
             <img :src="capturedImage" alt="截图预览" class="dropzone-preview" />
           </template>
@@ -31,13 +38,6 @@
           <div class="upload-footer-left">
             <button class="secondary-btn" @click="triggerFileSelect">
               选择图片
-            </button>
-            <button
-              class="secondary-btn"
-              :disabled="isCapturing"
-              @click="handleScreenshotClick"
-            >
-              {{ screenshotButtonText }}
             </button>
           </div>
           <button class="secondary-btn clear-btn" @click="clearImage" :disabled="!capturedImage">
@@ -85,30 +85,28 @@
             :disabled="!audioUrl"
             @click="handlePlayAudio"
           >
-            <svg
-              t="1763990440613"
-              class="icon"
-              viewBox="0 0 1024 1024"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path
-                d="M872.802928 755.99406 872.864326 755.99406 872.864326 755.624646Z"
-                fill="currentColor"
-              ></path>
-              <path
-                d="M744.055658 192.799074c-4.814656-2.889817-9.601682-5.251607-15.442714-5.251607-14.262842 0-25.758664 11.559267-25.758664 25.805736 0 10.285251 6.088672 18.519796 14.6957 23.195282 94.679359 55.247278 158.344355 157.787676 158.344355 275.30416 0 117.424386-63.605643 219.931015-158.159136 275.18034-8.29492 4.538363-15.442714 13.050224-15.442714 23.583115 0 14.261818 11.559267 25.820062 25.791409 25.820062 5.716188 0 10.252505-2.202155 15.22475-5.063319 109.871363-64.133669 183.764304-183.143157 183.764304-319.520197C927.074995 375.785665 853.495186 257.010515 744.055658 192.799074z"
-                fill="currentColor"
-              ></path>
-              <path
-                d="M773.946432 511.867994c0-79.96524-43.344181-149.739373-107.821681-187.289594-2.920516-1.52268-9.785877-4.520967-14.603603-4.520967-14.325263 0-25.914206 11.589966-25.914206 25.89988 0 9.616008 5.096065 18.176988 12.865006 22.666232 49.839105 28.307719 83.45983 81.829703 83.45983 143.244448 0 62.472843-34.801621 116.817566-86.070284 144.750755-7.457856 4.538363-12.397355 12.803607-12.397355 22.188348 0 14.325263 11.588943 25.943882 25.882484 25.943882 6.090718 0.031722 13.33061-3.542686 13.33061-3.542686C729.048873 664.171772 773.946432 593.294514 773.946432 511.867994z"
-                fill="currentColor"
-              ></path>
-              <path
-                d="M541.3694 124.672464c-10.846022-5.219885-23.740704-3.790326-33.215496 3.712555-0.435928 0.358157-46.423309 36.914748-97.195669 74.296123-88.308255 65.081251-114.036219 75.925227-119.257128 77.649498l-110.6194 0c-0.63752 0-1.243317 0.062422-1.879813 0.093121l-56.504922 0c-14.231119 0-25.775037 11.543917-25.775037 25.775037l0 411.697573c0 14.261818 11.512195 25.761734 25.775037 25.761734l189.511191 0.027629c5.096065 1.865487 29.395494 13.0799 107.761306 76.999698 45.613874 37.162388 86.505189 73.485665 86.940095 73.829496 5.841032 5.218862 13.298887 7.92039 20.820188 7.92039 4.349051 0 8.729825-0.930185 12.862959-2.764973 11.277858-5.064342 18.517749-16.252149 18.517749-28.619828 0 0 0.031722-97.257068 0.031722-132.212184 0.808412-2.484587 1.213641-5.127787 1.213641-7.863085 0-2.792603-1.245364-578.026786-1.245364-578.026786C559.110459 140.892891 552.214399 129.924071 541.3694 124.672464zM508.308423 726.470653c0 1.494027-0.467651 94.617961-0.467651 94.617961-13.889335-11.745509-29.332049-24.64019-45.240367-37.507242-104.59008-84.702124-130.505309-91.816149-148.030451-91.816149-0.372483 0-0.683569 0.091074-1.025353 0.091074s-0.652869-0.091074-1.025353-0.091074L170.394297 691.765223c-18.037818 0-22.248723-5.128811-22.248723-23.246447L148.145573 352.559685c0-12.32163 1.461281-20.057825 16.298198-20.057825l128.065747 0c17.090237 0 43.315528-6.991228 157.787676-90.839915 20.383236-14.914688 40.330544-29.938869 57.544601-43.113937 0 0 0.373507 445.207781 0.467651 521.368368C507.779374 722.028481 508.308423 724.234729 508.308423 726.470653z"
-                fill="currentColor"
-              ></path>
-            </svg>
+            <span class="audio-icon-wrapper">
+              <svg
+                v-if="!isPlayingAudio"
+                class="icon"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M5.714 8.857h.8l.596-.532 4.366-3.899v15.148L7.11 15.675l-.596-.532H3.095V8.857zm0-2.095 5.295-4.728c1.027-.834 2.562-.103 2.562 1.22v17.492c0 1.324-1.535 2.054-2.562 1.22l-5.295-4.728H3.095A2.095 2.095 0 0 1 1 15.143V8.857c0-1.157.938-2.095 2.095-2.095zM18.03 4.274a1.05 1.05 0 0 1 1.48-.082A10.45 10.45 0 0 1 23 12c0 3.103-1.35 5.892-3.492 7.809a1.048 1.048 0 0 1-1.397-1.562A8.36 8.36 0 0 0 20.905 12a8.36 8.36 0 0 0-2.794-6.247 1.05 1.05 0 0 1-.082-1.48m-.5 3.924a1.048 1.048 0 0 0-1.63 1.318c.606.748.932 1.518.932 2.484 0 .967-.326 1.736-.931 2.484a1.048 1.048 0 0 0 1.629 1.318c.85-1.052 1.397-2.274 1.397-3.802s-.546-2.75-1.397-3.802"
+                />
+              </svg>
+              <div v-else class="audio-wave">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </span>
             朗读
           </button>
 
@@ -123,39 +121,18 @@
         </footer>
       </section>
     </div>
-    <div
-      v-if="showSelectionOverlay"
-      class="selection-overlay"
-      @pointerdown="handlePointerDown"
-      @pointermove="handlePointerMove"
-      @pointerup="handlePointerUp"
-      @pointercancel="handlePointerUp"
-      @contextmenu.prevent="cancelSelection"
-    >
-      <div class="selection-tip">拖动选择截图区域，按 Esc 取消</div>
-      <div
-        v-show="selectionRect.width && selectionRect.height"
-        class="selection-box"
-        :style="selectionBoxStyle"
-      ></div>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
-import html2canvas from 'html2canvas'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { streamChat } from '@/api/chat'
 
 const OCR_APP_ID = import.meta.env.VITE_APP_ID as string | undefined
 const USER_ID = import.meta.env.VITE_USER_ID || 'default-user'
 const OCR_PROMPT = '提取这张图片上的文字'
 
-const isCapturing = ref(false)
 const ocrPageRef = ref<HTMLElement | null>(null)
-const isSelecting = ref(false)
-const showSelectionOverlay = ref(false)
-const isPointerActive = ref(false)
 const capturedImage = ref<string | null>(null)
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const isProcessing = ref(false)
@@ -167,49 +144,9 @@ let audioInstance: HTMLAudioElement | null = null
 // 去除换行功能已移除，保留结果原始格式
 const streamAbort = ref<(() => void) | null>(null)
 
-const selectionRect = reactive({
-  left: 0,
-  top: 0,
-  width: 0,
-  height: 0,
-})
-const selectionStart = reactive({
-  x: 0,
-  y: 0,
-})
-
-const selectionBoxStyle = computed(() => ({
-  left: `${selectionRect.left}px`,
-  top: `${selectionRect.top}px`,
-  width: `${selectionRect.width}px`,
-  height: `${selectionRect.height}px`,
-}))
-
 const displayResult = computed(() => {
   return rawResult.value
 })
-
-const screenshotButtonText = computed(() => {
-  if (isCapturing.value) return '截图中...'
-  if (isSelecting.value) return '退出截取'
-  return '屏幕截图'
-})
-
-const resetSelectionRect = () => {
-  selectionRect.left = 0
-  selectionRect.top = 0
-  selectionRect.width = 0
-  selectionRect.height = 0
-  selectionStart.x = 0
-  selectionStart.y = 0
-}
-
-const cancelSelection = () => {
-  isSelecting.value = false
-  showSelectionOverlay.value = false
-  isPointerActive.value = false
-  resetSelectionRect()
-}
 
 const clearImage = () => {
   capturedImage.value = null
@@ -238,6 +175,48 @@ const fileToDataUrl = (file: File) => {
     reader.onerror = () => reject(reader.error)
     reader.readAsDataURL(file)
   })
+}
+
+const handleDropzonePaste = async (event: ClipboardEvent) => {
+  const items = event.clipboardData?.items
+  if (!items || items.length === 0) return
+
+  for (let i = 0; i < items.length; i += 1) {
+    const item = items[i]
+    if (!item) continue
+    if (item.type.startsWith('image/')) {
+      const file = item.getAsFile()
+      if (!file) continue
+      try {
+        event.preventDefault()
+        capturedImage.value = await fileToDataUrl(file)
+        await startRecognition(file)
+      } catch (error) {
+        console.error('粘贴图片处理失败', error)
+        ocrError.value = '粘贴图片处理失败，请重试'
+      }
+      break
+    }
+  }
+}
+
+const handleDropzoneDrop = async (event: DragEvent) => {
+  const files = event.dataTransfer?.files
+  if (!files || files.length === 0) return
+
+  const file = files[0]
+  if (!file.type.startsWith('image/')) {
+    ocrError.value = '请拖入图片文件'
+    return
+  }
+
+  try {
+    capturedImage.value = await fileToDataUrl(file)
+    await startRecognition(file)
+  } catch (error) {
+    console.error('拖放图片处理失败', error)
+    ocrError.value = '拖放图片处理失败，请重试'
+  }
 }
 
 const dataUrlToFile = (dataUrl: string, fileName: string) => {
@@ -336,89 +315,10 @@ const startRecognition = async (file: File) => {
   }
 }
 
-const handleScreenshotClick = () => {
-  if (isCapturing.value) return
-  if (isSelecting.value) {
-    cancelSelection()
-    return
-  }
-  isSelecting.value = true
-  showSelectionOverlay.value = true
-}
-
-const handlePointerDown = (event: PointerEvent) => {
-  if (event.button !== 0) return
-  event.preventDefault()
-  isPointerActive.value = true
-  selectionStart.x = event.clientX
-  selectionStart.y = event.clientY
-  selectionRect.left = selectionStart.x
-  selectionRect.top = selectionStart.y
-  selectionRect.width = 0
-  selectionRect.height = 0
-}
-
-const handlePointerMove = (event: PointerEvent) => {
-  if (!isPointerActive.value) return
-  const currentX = event.clientX
-  const currentY = event.clientY
-  selectionRect.left = Math.min(selectionStart.x, currentX)
-  selectionRect.top = Math.min(selectionStart.y, currentY)
-  selectionRect.width = Math.abs(currentX - selectionStart.x)
-  selectionRect.height = Math.abs(currentY - selectionStart.y)
-}
-
-const captureSelectedArea = async () => {
-  if (typeof window === 'undefined') return
-  if (selectionRect.width < 10 || selectionRect.height < 10) return
-  isCapturing.value = true
-  try {
-    await nextTick()
-    await new Promise((resolve) => requestAnimationFrame(resolve))
-
-    const target = ocrPageRef.value || document.body
-    const rect = target.getBoundingClientRect()
-
-    const canvas = await html2canvas(target, {
-      backgroundColor: '#ffffff',
-      useCORS: true,
-      scale: window.devicePixelRatio || 1,
-      x: selectionRect.left - rect.left,
-      y: selectionRect.top - rect.top,
-      width: selectionRect.width,
-      height: selectionRect.height,
-    })
-
-    const dataUrl = canvas.toDataURL('image/png')
-    capturedImage.value = dataUrl
-    const screenshotFile = dataUrlToFile(dataUrl, `screenshot-${Date.now()}.png`)
-    await startRecognition(screenshotFile)
-  } catch (error) {
-    console.error('截图失败', error)
-    ocrError.value = '截图失败，请重试'
-  } finally {
-    isCapturing.value = false
-    cancelSelection()
-  }
-}
-
-const handlePointerUp = () => {
-  if (!isPointerActive.value) return
-  isPointerActive.value = false
-  if (selectionRect.width < 10 || selectionRect.height < 10) {
-    cancelSelection()
-    return
-  }
-  isSelecting.value = false
-  showSelectionOverlay.value = false
-  void captureSelectedArea()
-}
-
-const handleKeydown = (event: KeyboardEvent) => {
-  if (event.key === 'Escape' && isSelecting.value) {
-    event.preventDefault()
-    cancelSelection()
-  }
+const handleScreenshotGuide = () => {
+  // 这里不做真实截图，只给出引导说明
+  // 建议用户使用系统截图快捷键，然后通过「选择图片」或粘贴到聊天输入框进行 OCR
+  alert('请使用系统截图快捷键（例如 Win+Shift+S），然后：\n1）粘贴到聊天输入框，或\n2）保存为图片后使用“选择图片”上传进行识别。')
 }
 
 const copyResult = async () => {
@@ -464,11 +364,9 @@ const handlePlayAudio = () => {
 }
 
 onMounted(() => {
-  window.addEventListener('keydown', handleKeydown)
 })
 
 onBeforeUnmount(() => {
-  window.removeEventListener('keydown', handleKeydown)
   streamAbort.value?.()
   streamAbort.value = null
   if (audioInstance) {
@@ -488,7 +386,6 @@ onBeforeUnmount(() => {
 
 .ocr-page {
   height: 100%;
-  background: #f5f7fb;
   color: #0f172a;
   padding: 16px 20px;
   display: flex;
@@ -576,6 +473,7 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 16px;
+  align-items: stretch;
 }
 
 .panel {
@@ -586,6 +484,7 @@ onBeforeUnmount(() => {
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .upload-panel {
@@ -612,12 +511,12 @@ onBeforeUnmount(() => {
 
 .dropzone-preview {
   width: 100%;
-  height: 100%;
-  flex: 1;
+  height: auto;
+  max-height: 260px;
+  flex: 0 0 auto;
   border-radius: 18px;
   object-fit: contain;
-  background: #ffffff;
-  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
+  background: #f8fafc;
 }
 
 .dropzone-icon {
@@ -764,6 +663,32 @@ onBeforeUnmount(() => {
   padding: 12px 16px;
 }
 
+.result-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: rgba(15, 23, 42, 0.85);
+}
+
+.loading-spinner {
+  display: none;
+}
+
+.result-loading p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.result-loading p::after {
+  content: '';
+  display: inline-block;
+  width: 1.2em;
+  text-align: left;
+  animation: loading-dots 1.2s steps(4, end) infinite;
+}
+
 .result-placeholder {
   color: rgba(15, 23, 42, 0.55);
   display: flex;
@@ -785,8 +710,7 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
   border-radius: 18px;
-  background: #ffffff;
-  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
+  background: #f8fafc;
   padding: 16px 20px 48px;
   text-align: left;
   overflow: auto;
@@ -805,11 +729,96 @@ onBeforeUnmount(() => {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  background: transparent;
+  box-shadow: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.audio-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
 }
 
 .audio-footer-btn .icon {
   width: 18px;
   height: 18px;
+}
+
+.audio-wave {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 18px;
+  gap: 2px;
+  height: 18px;
+}
+
+.audio-wave span {
+  width: 1.5px;
+  background-color: currentColor;
+  border-radius: 999px;
+  animation: audio-wave 1s infinite ease-in-out;
+}
+
+.audio-wave span:nth-child(1) {
+  height: 6px;
+  animation-delay: 0s;
+}
+
+.audio-wave span:nth-child(2) {
+  height: 10px;
+  animation-delay: 0.1s;
+}
+
+.audio-wave span:nth-child(3) {
+  height: 14px;
+  animation-delay: 0.2s;
+}
+
+.audio-wave span:nth-child(4) {
+  height: 9px;
+  animation-delay: 0.3s;
+}
+
+@keyframes audio-wave {
+  0%, 100% {
+    transform: scaleY(0.6);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes ocr-spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loading-dots {
+  0% {
+    content: '';
+  }
+  25% {
+    content: '.';
+  }
+  50% {
+    content: '..';
+  }
+  75% {
+    content: '...';
+  }
+  100% {
+    content: '';
+  }
 }
 
 .result-footer {

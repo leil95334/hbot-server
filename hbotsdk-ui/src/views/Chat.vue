@@ -21,7 +21,7 @@
         <div class="chat-input-container">
           <!-- 小工具栏：OCR / TTS -->
           <div class="tool-bar">
-            <div class="tool-item" role="button" tabindex="0" @click="openOcrPanel" @keyup.enter="openOcrPanel">
+            <button class="tool-item" type="button" @click="openOcrPanel" @keyup.enter="openOcrPanel">
               <div class="tool-icon">
                 <svg width="20" height="20" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                   <g fill="currentColor" fill-rule="evenodd">
@@ -31,15 +31,7 @@
                 </svg>
               </div>
               <div class="tool-name">OCR</div>
-            </div>
-            <div class="tool-item">
-              <div class="tool-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path fill="currentColor" d="M9 4v16l10-8z" />
-                </svg>
-              </div>
-              <div class="tool-name">TTS</div>
-            </div>
+            </button>
           </div>
 
           <!-- 图片预览（在聊天框中） -->
@@ -102,11 +94,14 @@
 
     <teleport to="body">
       <transition name="ocr-modal-fade">
-        <div v-if="showOcrModal" class="ocr-modal-overlay" @click.self="closeOcrPanel">
+        <div v-if="showOcrModal" class="ocr-modal-overlay">
           <button class="ocr-modal-close" type="button" @click="closeOcrPanel" aria-label="关闭 OCR 面板">
             ×
           </button>
-          <OcrPanel />
+          <OcrPanel
+            @close-panel="closeOcrPanel"
+            @open-panel="openOcrPanel"
+          />
         </div>
       </transition>
     </teleport>
@@ -848,7 +843,7 @@ onBeforeUnmount(() => {
 .ocr-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.65);
+  background: #626773;
   backdrop-filter: blur(3px);
   z-index: 2000;
   display: flex;
@@ -884,8 +879,7 @@ onBeforeUnmount(() => {
   max-width: 50vw;
   max-height: 50vh;
   overflow: hidden;
-  border-radius: 24px;
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+  background: #626773;
 }
 
 .ocr-modal-fade-enter-active,
