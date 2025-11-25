@@ -290,7 +290,7 @@ const startRecognition = async (file: File) => {
           if (lane === 'output_isn9lm_text_1') {
             rawResult.value += textCandidate
             isUploading.value = false
-          } else if (lane === 'output_h0uzga_text_1') {
+          } else if (lane === 'output_ggdchn_text_1') {
             audioUrl.value = textCandidate
             // 新的音频地址到来时，重置播放状态
             isPlayingAudio.value = false
