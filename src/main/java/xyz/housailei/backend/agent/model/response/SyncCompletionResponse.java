@@ -1,23 +1,16 @@
 package xyz.housailei.backend.agent.model.response;
 
+import lombok.Data;
 import lombok.Getter;
 
 import java.util.List;
 
-@Getter
+@Data
 public class SyncCompletionResponse {
     private String requestId;
     private List<Answer> result;
 
     public SyncCompletionResponse() {
-    }
-
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
-    }
-
-    public void setResult(List<Answer> result) {
-        this.result = result;
     }
 
     public static class Answer {

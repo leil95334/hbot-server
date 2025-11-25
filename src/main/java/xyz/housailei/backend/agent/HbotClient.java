@@ -102,10 +102,10 @@ public class HbotClient {
 
         data.put("stream", completionRequest.getStream());
         if (completionRequest.getStream()) {
-            Iterable<HttpResponseEvent> responseIter = this.httpClient.postStream("/api/completion", data, (Map)null, 110);
+            Iterable<HttpResponseEvent> responseIter = this.httpClient.postStream("/api/completion", data, null, 110);
             return this.stream(responseIter, completionRequest.getMessageParser());
         } else {
-            String responseText = this.httpClient.post("/api/completion", data, (Map)null);
+            String responseText = this.httpClient.post("/api/completion", data, null);
             return new HbotResponse(responseText, new TypeReference<SyncCompletionResponse>() {
             });
         }

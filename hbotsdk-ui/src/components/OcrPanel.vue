@@ -10,15 +10,15 @@
           </div>
         </header>
         <div
-          class="dropzone"
-          :class="{ 'has-preview': !!capturedImage }"
-          @paste.prevent="handleDropzonePaste"
-          @dragover.prevent
-          @dragenter.prevent
-          @drop.prevent="handleDropzoneDrop"
+            class="dropzone"
+            :class="{ 'has-preview': !!capturedImage }"
+            @paste.prevent="handleDropzonePaste"
+            @dragover.prevent
+            @dragenter.prevent
+            @drop.prevent="handleDropzoneDrop"
         >
           <template v-if="capturedImage">
-            <img :src="capturedImage" alt="截图预览" class="dropzone-preview" />
+            <img :src="capturedImage" alt="截图预览" class="dropzone-preview"/>
           </template>
           <template v-else>
             <p class="dropzone-hint">拖放图片 / 粘贴图像</p>
@@ -27,11 +27,11 @@
         </div>
 
         <input
-          ref="fileInputRef"
-          type="file"
-          accept="image/*"
-          style="display: none"
-          @change="handleFileChange"
+            ref="fileInputRef"
+            type="file"
+            accept="image/*"
+            style="display: none"
+            @change="handleFileChange"
         />
 
         <footer class="upload-footer">
@@ -53,24 +53,24 @@
             <button class="chip">表格识别</button>
             <button class="chip">公式识别</button>
           </div>
-          <button class="language-select" type="button">
-            <span>中文</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M7 10l5 5 5-5H7z" fill="currentColor" />
-            </svg>
-          </button>
         </header>
 
         <div class="result-body">
-          <div v-if="isProcessing" class="result-loading">
-            <div class="loading-spinner"></div>
-            <p>识别中，请稍候...</p>
+          <div v-if="ocrError" class="result-error">
+            <p>{{ ocrError }}</p>
           </div>
           <div v-else-if="displayResult" class="result-text-wrapper">
+            <div v-if="isProcessing" class="result-loading-inline">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
             <pre class="result-text">{{ displayResult }}</pre>
           </div>
-          <div v-else-if="ocrError" class="result-error">
-            <p>{{ ocrError }}</p>
+          <div v-else-if="isUploading">
+            <a-space>
+              <a-spin size="large"/>
+            </a-space>
           </div>
           <div v-else class="result-placeholder">
             <div class="placeholder-icon">Tt</div>
@@ -80,24 +80,24 @@
 
         <footer class="result-footer">
           <button
-            class="secondary-btn audio-footer-btn"
-            type="button"
-            :disabled="!audioUrl"
-            @click="handlePlayAudio"
+              class="secondary-btn audio-footer-btn"
+              type="button"
+              :disabled="!audioUrl"
+              @click="handlePlayAudio"
           >
             <span class="audio-icon-wrapper">
               <svg
-                v-if="!isPlayingAudio"
-                class="icon"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
+                  v-if="!isPlayingAudio"
+                  class="icon"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
               >
                 <path
-                  fill="currentColor"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M5.714 8.857h.8l.596-.532 4.366-3.899v15.148L7.11 15.675l-.596-.532H3.095V8.857zm0-2.095 5.295-4.728c1.027-.834 2.562-.103 2.562 1.22v17.492c0 1.324-1.535 2.054-2.562 1.22l-5.295-4.728H3.095A2.095 2.095 0 0 1 1 15.143V8.857c0-1.157.938-2.095 2.095-2.095zM18.03 4.274a1.05 1.05 0 0 1 1.48-.082A10.45 10.45 0 0 1 23 12c0 3.103-1.35 5.892-3.492 7.809a1.048 1.048 0 0 1-1.397-1.562A8.36 8.36 0 0 0 20.905 12a8.36 8.36 0 0 0-2.794-6.247 1.05 1.05 0 0 1-.082-1.48m-.5 3.924a1.048 1.048 0 0 0-1.63 1.318c.606.748.932 1.518.932 2.484 0 .967-.326 1.736-.931 2.484a1.048 1.048 0 0 0 1.629 1.318c.85-1.052 1.397-2.274 1.397-3.802s-.546-2.75-1.397-3.802"
+                    fill="currentColor"
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M5.714 8.857h.8l.596-.532 4.366-3.899v15.148L7.11 15.675l-.596-.532H3.095V8.857zm0-2.095 5.295-4.728c1.027-.834 2.562-.103 2.562 1.22v17.492c0 1.324-1.535 2.054-2.562 1.22l-5.295-4.728H3.095A2.095 2.095 0 0 1 1 15.143V8.857c0-1.157.938-2.095 2.095-2.095zM18.03 4.274a1.05 1.05 0 0 1 1.48-.082A10.45 10.45 0 0 1 23 12c0 3.103-1.35 5.892-3.492 7.809a1.048 1.048 0 0 1-1.397-1.562A8.36 8.36 0 0 0 20.905 12a8.36 8.36 0 0 0-2.794-6.247 1.05 1.05 0 0 1-.082-1.48m-.5 3.924a1.048 1.048 0 0 0-1.63 1.318c.606.748.932 1.518.932 2.484 0 .967-.326 1.736-.931 2.484a1.048 1.048 0 0 0 1.629 1.318c.85-1.052 1.397-2.274 1.397-3.802s-.546-2.75-1.397-3.802"
                 />
               </svg>
               <div v-else class="audio-wave">
@@ -125,8 +125,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { streamChat } from '@/api/chat'
+import {computed, onBeforeUnmount, onMounted, ref} from 'vue'
+import {streamChat} from '@/api/chat'
 
 const OCR_APP_ID = import.meta.env.VITE_APP_ID as string | undefined
 const USER_ID = import.meta.env.VITE_USER_ID || 'default-user'
@@ -136,6 +136,7 @@ const ocrPageRef = ref<HTMLElement | null>(null)
 const capturedImage = ref<string | null>(null)
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const isProcessing = ref(false)
+const isUploading = ref(false)
 const ocrError = ref<string | null>(null)
 const rawResult = ref('')
 const audioUrl = ref('')
@@ -162,6 +163,7 @@ const clearImage = () => {
   streamAbort.value?.()
   streamAbort.value = null
   isProcessing.value = false
+  isUploading.value = false
 }
 
 const triggerFileSelect = () => {
@@ -189,11 +191,13 @@ const handleDropzonePaste = async (event: ClipboardEvent) => {
       if (!file) continue
       try {
         event.preventDefault()
+        isUploading.value = true
         capturedImage.value = await fileToDataUrl(file)
         await startRecognition(file)
       } catch (error) {
         console.error('粘贴图片处理失败', error)
         ocrError.value = '粘贴图片处理失败，请重试'
+        isUploading.value = false
       }
       break
     }
@@ -211,11 +215,13 @@ const handleDropzoneDrop = async (event: DragEvent) => {
   }
 
   try {
+    isUploading.value = true
     capturedImage.value = await fileToDataUrl(file)
     await startRecognition(file)
   } catch (error) {
     console.error('拖放图片处理失败', error)
     ocrError.value = '拖放图片处理失败，请重试'
+    isUploading.value = false
   }
 }
 
@@ -229,7 +235,7 @@ const dataUrlToFile = (dataUrl: string, fileName: string) => {
   for (let i = 0; i < len; i += 1) {
     u8arr[i] = binary.charCodeAt(i)
   }
-  return new File([u8arr], fileName, { type: mime })
+  return new File([u8arr], fileName, {type: mime})
 }
 
 const handleFileChange = async (event: Event) => {
@@ -237,11 +243,13 @@ const handleFileChange = async (event: Event) => {
   const file = target?.files?.[0]
   if (!file) return
   try {
+    isUploading.value = true
     capturedImage.value = await fileToDataUrl(file)
     await startRecognition(file)
   } catch (error) {
     console.error('读取图片失败', error)
     ocrError.value = '读取图片失败，请重试'
+    isUploading.value = false
   } finally {
     if (target) {
       target.value = ''
@@ -262,50 +270,53 @@ const startRecognition = async (file: File) => {
 
   try {
     streamAbort.value = await streamChat(
-      {
-        appId: OCR_APP_ID,
-        query: OCR_PROMPT,
-        userId: USER_ID,
-        file,
-      },
-      (event) => {
-        const isChunkEvent = event.type === 'chunk' || event.data?.type === 'chunk'
-        const lane = event.data?.lane
-        const payload = event.data?.payload ?? event.data ?? event
-        const textCandidate =
-          typeof payload === 'string'
-            ? payload
-            : payload?.text ?? payload?.content ?? payload?.result ?? payload?.message ?? ''
+        {
+          appId: OCR_APP_ID,
+          query: OCR_PROMPT,
+          userId: USER_ID,
+          file,
+        },
+        (event) => {
+          const isChunkEvent = event.type === 'chunk' || event.data?.type === 'chunk'
+          const lane = event.data?.lane
+          const payload = event.data?.payload ?? event.data ?? event
+          const textCandidate =
+              typeof payload === 'string'
+                  ? payload
+                  : payload?.text ?? payload?.content ?? payload?.result ?? payload?.message ?? ''
 
-        if (!isChunkEvent || typeof textCandidate !== 'string' || !textCandidate) return
+          if (!isChunkEvent || typeof textCandidate !== 'string' || !textCandidate) return
 
-        if (lane === 'output_isn9lm_text_1') {
-          rawResult.value += textCandidate
-        } else if (lane === 'output_h0uzga_text_1') {
-          audioUrl.value = textCandidate
-          // 新的音频地址到来时，重置播放状态
-          isPlayingAudio.value = false
-          if (audioInstance) {
-            audioInstance.pause()
-            audioInstance.currentTime = 0
-            audioInstance = null
+          if (lane === 'output_isn9lm_text_1') {
+            rawResult.value += textCandidate
+            isUploading.value = false
+          } else if (lane === 'output_h0uzga_text_1') {
+            audioUrl.value = textCandidate
+            // 新的音频地址到来时，重置播放状态
+            isPlayingAudio.value = false
+            if (audioInstance) {
+              audioInstance.pause()
+              audioInstance.currentTime = 0
+              audioInstance = null
+            }
           }
-        }
-      },
-      (error) => {
-        console.error('OCR 请求失败', error)
-        ocrError.value = '识别过程中出现问题，请稍后重试'
-        isProcessing.value = false
-        streamAbort.value = null
-      },
-      () => {
-        isProcessing.value = false
-        streamAbort.value = null
-        if (!rawResult.value && !ocrError.value) {
-          ocrError.value = '未获取到识别结果'
-        }
-      },
-      { endpoint: '/api/bailing/stream-chat-with-file' },
+        },
+        (error) => {
+          console.error('OCR 请求失败', error)
+          ocrError.value = '识别过程中出现问题，请稍后重试'
+          isProcessing.value = false
+          isUploading.value = false
+          streamAbort.value = null
+        },
+        () => {
+          isProcessing.value = false
+          isUploading.value = false
+          streamAbort.value = null
+          if (!rawResult.value && !ocrError.value) {
+            ocrError.value = '未获取到识别结果'
+          }
+        },
+        {endpoint: '/api/bailing/stream-chat-with-file'},
     )
   } catch (error) {
     console.error('OCR 请求启动失败', error)
@@ -314,13 +325,6 @@ const startRecognition = async (file: File) => {
     streamAbort.value = null
   }
 }
-
-const handleScreenshotGuide = () => {
-  // 这里不做真实截图，只给出引导说明
-  // 建议用户使用系统截图快捷键，然后通过「选择图片」或粘贴到聊天输入框进行 OCR
-  alert('请使用系统截图快捷键（例如 Win+Shift+S），然后：\n1）粘贴到聊天输入框，或\n2）保存为图片后使用“选择图片”上传进行识别。')
-}
-
 const copyResult = async () => {
   if (!displayResult.value) return
   try {
@@ -406,17 +410,6 @@ onBeforeUnmount(() => {
   gap: 18px;
 }
 
-.logo-chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #69a5ff, #3c63ff);
-  font-weight: 600;
-}
-
 .header-tabs {
   display: inline-flex;
   padding: 4px;
@@ -444,23 +437,6 @@ onBeforeUnmount(() => {
   background: #ffffff;
   color: #111827;
   font-weight: 600;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-}
-
-.mode-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
-  cursor: default;
 }
 
 .mode-chip svg {
@@ -512,23 +488,11 @@ onBeforeUnmount(() => {
 .dropzone-preview {
   width: 100%;
   height: auto;
-  max-height: 260px;
+  max-height: 200px;
   flex: 0 0 auto;
   border-radius: 18px;
   object-fit: contain;
   background: #f8fafc;
-}
-
-.dropzone-icon {
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 24px;
-  border-radius: 24px;
-  background: rgba(99, 102, 241, 0.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #4f46e5;
 }
 
 .dropzone-icon svg {
@@ -563,25 +527,9 @@ onBeforeUnmount(() => {
   gap: 12px;
 }
 
-.upload-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.upload-btn {
-  flex: 1;
-}
-
 .upload-btn svg {
   width: 20px;
   height: 20px;
-}
-
-.upload-btn:disabled,
-.clear-btn:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
 }
 
 .clear-btn {
@@ -596,12 +544,6 @@ onBeforeUnmount(() => {
 .result-panel {
   gap: 12px;
   flex: 1;
-}
-
-.result-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .result-header {
@@ -635,18 +577,6 @@ onBeforeUnmount(() => {
   font-weight: 600;
 }
 
-.language-select {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: rgba(59, 130, 246, 0.08);
-  font-size: 14px;
-  cursor: pointer;
-  border: none;
-}
-
 .language-select svg {
   width: 18px;
   height: 18px;
@@ -661,19 +591,6 @@ onBeforeUnmount(() => {
   justify-content: center;
   text-align: center;
   padding: 12px 16px;
-}
-
-.result-loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  color: rgba(15, 23, 42, 0.85);
-}
-
-.loading-spinner {
-  display: none;
 }
 
 .result-loading p {
@@ -821,6 +738,29 @@ onBeforeUnmount(() => {
   }
 }
 
+@keyframes ocr-upload-indeterminate {
+  0% {
+    transform: translateX(0%);
+  }
+  50% {
+    transform: translateX(150%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+@keyframes ocr-inline-dots {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
+
 .result-footer {
   display: flex;
   justify-content: space-between;
@@ -863,45 +803,9 @@ onBeforeUnmount(() => {
   filter: brightness(1.05);
 }
 
-.selection-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.25);
-  backdrop-filter: blur(2px);
-  z-index: 999;
-  cursor: crosshair;
-  user-select: none;
-}
-
-.selection-tip {
-  position: fixed;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(15, 23, 42, 0.85);
-  color: #ffffff;
-  padding: 8px 18px;
-  border-radius: 999px;
-  font-size: 14px;
-  pointer-events: none;
-}
-
-.selection-box {
-  position: fixed;
-  border: 2px solid #2563eb;
-  background: rgba(37, 99, 235, 0.15);
-  border-radius: 16px;
-  pointer-events: none;
-  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.1);
-}
-
 @media (max-width: 768px) {
   .ocr-page {
     padding: 24px;
-  }
-
-  .upload-actions {
-    flex-direction: column;
   }
 
   .result-footer {

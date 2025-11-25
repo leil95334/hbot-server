@@ -1,9 +1,11 @@
 package xyz.housailei.backend.agent.core.exception;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Map;
 
+@Setter
 @Getter
 public class HbotServerException extends HbotClientException {
     private Map<String, Object> errorContext;
@@ -16,7 +18,4 @@ public class HbotServerException extends HbotClientException {
         super(message, cause);
     }
 
-    public void setErrorContext(Map<String, Object> errorContext) {
-        this.errorContext = errorContext;
-    }
 }
