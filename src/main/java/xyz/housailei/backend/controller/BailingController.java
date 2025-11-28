@@ -71,6 +71,7 @@ public class BailingController {
                 ChatRequest chatRequest = new ChatRequest(appId, query, userId, conversationId);
                 chatRequest.setFiles(files.isEmpty() ? null : files);
                 chatRequest.setStream(true);
+                chatRequest.setConversationId("20251128xW9b58662769");
 
                 @SuppressWarnings("unchecked")
                 Iterable<Map<String, Object>> streamResponse =

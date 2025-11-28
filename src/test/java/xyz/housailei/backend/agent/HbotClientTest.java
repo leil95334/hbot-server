@@ -10,8 +10,13 @@ import xyz.housailei.backend.agent.core.exception.HbotClientConfigException;
 import xyz.housailei.backend.agent.core.exception.HbotHttpResponseException;
 import xyz.housailei.backend.agent.model.file.File;
 import xyz.housailei.backend.agent.model.file.FileType;
+import xyz.housailei.backend.agent.model.request.ChatRequest;
 import xyz.housailei.backend.agent.model.request.CompletionRequest;
+import xyz.housailei.backend.agent.model.request.ConversationListRequest;
+import xyz.housailei.backend.agent.model.request.MessageListRequest;
+import xyz.housailei.backend.agent.model.response.ConversationListResponse;
 import xyz.housailei.backend.agent.model.response.HbotResponse;
+import xyz.housailei.backend.agent.model.response.MessageListResponse;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -110,5 +115,64 @@ class HbotClientTest {
             return FileType.VIDEO;
         }
         return FileType.FILE;
+    }
+
+    @Test
+    void getConversations() {
+
+        ConversationListRequest conversationListRequest = new ConversationListRequest();
+        conversationListRequest.setAppId("202511APSdf200565893");
+        conversationListRequest.setUserId("20251128FkT358658129");
+        conversationListRequest.setPageNum(1);
+        conversationListRequest.setPageSize(10);
+        conversationListRequest.setSortOrder("DESC");
+        try {
+            HbotResponse<ConversationListResponse> response = hbotClient.getConversations(conversationListRequest);
+            System.out.println(response);
+        } catch (HbotClientConfigException | HbotHttpResponseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void getMessages() {
+        MessageListRequest messageListRequest = new MessageListRequest();
+        messageListRequest.setConversationId("20251128xW9b58662769");
+        messageListRequest.setPageNum(1);
+        messageListRequest.setPageSize(10);
+        messageListRequest.setSortOrder("DESC");
+        try {
+            HbotResponse<MessageListResponse> response = hbotClient.getMessages(messageListRequest);
+            System.out.println(response);
+        } catch (HbotClientConfigException | HbotHttpResponseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void createConversation() {
+        try {
+            HbotResponse<String> response = hbotClient.createConversation("202511APSdf200565893");
+            System.out.println(response);
+        } catch (HbotClientConfigException | HbotHttpResponseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    void chat() {
+        ChatRequest chatRequest = new ChatRequest();
+        chatRequest.setAppId("202511APY9A100562855");
+        chatRequest.setQuery("你好");
+        chatRequest.setUserId("999"); // 用户ID 要求必穿 但是传了 不会给你返回
+        chatRequest.setStream(true);
+        try {
+            Iterable<Map<String, Object>>  response = (Iterable<Map<String, Object>>) hbotClient.chat(chatRequest);
+            for (Map<String, Object> chunk : response) {
+                System.out.println(chunk);
+            }
+        } catch (HbotClientConfigException | HbotHttpResponseException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

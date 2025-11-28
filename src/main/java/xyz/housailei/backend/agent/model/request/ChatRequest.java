@@ -20,6 +20,9 @@ public class ChatRequest {
     private Boolean searchEngine = false;
     private MessageParser messageParser = null;
 
+    public ChatRequest() {
+    }
+
     public ChatRequest(String appId, String query, String userId) {
         this.appId = appId;
         this.query = query;
