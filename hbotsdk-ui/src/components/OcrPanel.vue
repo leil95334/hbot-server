@@ -5,7 +5,22 @@
         <header class="ocr-header">
           <div class="header-left">
             <div class="header-tabs">
-              <button class="tab is-active">OCR 文字识别</button>
+              <button class="tab is-active">
+                <span class="tab-icon" aria-hidden="true">
+                  <svg
+                      class="icon"
+                      viewBox="0 0 1024 1024"
+                      xmlns="http://www.w3.org/2000/svg"
+                      role="img"
+                  >
+                    <path
+                        d="M312.483343 921.751314H219.044696a118.968331 118.968331 0 0 1-118.968331-118.713034v-93.693944a51.05937 51.05937 0 0 0-100.076365 0v93.693944A219.299993 219.299993 0 0 0 219.044696 1022.082976h93.438647a51.05937 51.05937 0 1 0 0-100.331662zM801.887402 0.895581h-93.949241a51.05937 51.05937 0 1 0 0 100.331662h93.949241a118.968331 118.968331 0 0 1 118.968331 119.223628v93.438647a51.05937 51.05937 0 1 0 100.331662 0V220.450871A219.55529 219.55529 0 0 0 801.887402 0.895581zM51.05937 363.9277a51.05937 51.05937 0 0 0 51.059369-51.05937V220.195574a118.968331 118.968331 0 0 1 116.925957-118.968331h93.693944a51.05937 51.05937 0 0 0 0-100.331662H219.044696A219.55529 219.55529 0 0 0 0 220.195574v93.438647a51.05937 51.05937 0 0 0 51.05937 50.293479zM970.128025 659.306154a51.05937 51.05937 0 0 0-51.05937 51.05937v93.693943a118.968331 118.968331 0 0 1-118.968331 118.713035h-92.162163a51.05937 51.05937 0 1 0 0 100.331661h93.949241A219.299993 219.299993 0 0 0 1021.187395 803.03828v-93.693944a51.05937 51.05937 0 0 0-51.05937-50.038182zM241.510819 358.311169a139.392079 139.392079 0 0 0-106.458786 43.655762 158.028749 158.028749 0 0 0-40.081605 111.564722 149.85925 149.85925 0 0 0 39.315714 106.458786 136.583814 136.583814 0 0 0 102.11874 41.613387 136.839111 136.839111 0 0 0 104.671708-43.145168A157.007562 157.007562 0 0 0 382.945273 507.915123a153.178109 153.178109 0 0 0-38.294527-107.224677A132.243768 132.243768 0 0 0 241.510819 358.311169z m44.676948 214.449353a56.420604 56.420604 0 0 1-47.995807 21.700232 56.420604 56.420604 0 0 1-47.485214-22.466122 102.118739 102.118739 0 0 1-17.870779-60.505353 98.03399 98.03399 0 0 1 18.381373-62.037135 57.697088 57.697088 0 0 1 48.506401-22.976716 55.144119 55.144119 0 0 1 46.97462 22.210826 104.671708 104.671708 0 0 1 17.360186 63.824212 97.012802 97.012802 0 0 1-17.87078 60.250056zM550.930599 358.311169a150.625141 150.625141 0 0 0-111.820019 44.421652 154.70989 154.70989 0 0 0-43.400465 113.096504 144.753313 144.753313 0 0 0 38.294528 105.692895 141.434454 141.434454 0 0 0 105.182301 40.081606 187.898481 187.898481 0 0 0 82.716179-15.828405l4.340047-2.042375v-73.014898l-11.743655 6.893014a124.329565 124.329565 0 0 1-63.824212 16.849592 72.504305 72.504305 0 0 1-56.931198-22.466122 84.758554 84.758554 0 0 1-20.168451-60.505353 86.545632 86.545632 0 0 1 22.210826-62.547728 76.589055 76.589055 0 0 1 59.484166-23.742607 117.947144 117.947144 0 0 1 59.994759 15.573108l11.743655 6.893014v-76.589054l-5.105937-1.787078a198.110355 198.110355 0 0 0-70.972524-10.977765zM872.859926 446.133285c0-37.783934-18.63667-82.971476-107.224677-82.971475h-105.182302v293.336079h74.801977v-107.479974h10.211874a21.444935 21.444935 0 0 1 13.530733 4.850641 93.94924 93.94924 0 0 1 20.168451 25.529684l45.953433 76.589055h86.800928L851.925584 562.548648a146.029797 146.029797 0 0 0-31.146216-37.018043 91.906866 91.906866 0 0 0 33.954481-25.529685 83.226773 83.226773 0 0 0 18.126077-53.867635z m-76.589055 7.403609a32.677997 32.677997 0 0 1-10.211874 25.529685 39.315715 39.315715 0 0 1-28.082653 9.70128h-22.72142v-65.100696h22.466123c33.699184 0 37.27334 16.083701 37.27334 29.869731z"
+                        fill="currentColor"
+                    />
+                  </svg>
+                </span>
+                文字识别
+              </button>
             </div>
           </div>
         </header>
@@ -18,7 +33,14 @@
             @drop.prevent="handleDropzoneDrop"
         >
           <template v-if="capturedImage">
-            <img :src="capturedImage" alt="截图预览" class="dropzone-preview"/>
+            <img
+                :src="capturedImage"
+                alt="截图预览"
+                class="dropzone-preview"
+                :style="previewImageStyle"
+                @wheel.prevent="handlePreviewWheel"
+                draggable="false"
+            />
           </template>
           <template v-else>
             <p class="dropzone-hint">拖放图片 / 粘贴图像</p>
@@ -36,11 +58,45 @@
 
         <footer class="upload-footer">
           <div class="upload-footer-left">
-            <button class="secondary-btn" @click="triggerFileSelect">
+            <button class="secondary-btn upload-btn" @click="triggerFileSelect">
+              <span class="button-icon" aria-hidden="true">
+                <svg
+                    class="icon"
+                    viewBox="0 0 1024 1024"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                >
+                  <path
+                      d="M128 853.333333h768.064L896 170.666667H127.936L128 853.333333zM127.936 128h768.128C919.594667 128 938.666667 146.986667 938.666667 170.666667v682.666666c0 23.573333-19.029333 42.666667-42.602667 42.666667H127.936A42.56 42.56 0 0 1 85.333333 853.333333V170.666667c0-23.573333 19.029333-42.666667 42.602667-42.666667z m200.128 527.082667c22.890667-19.626667 68.48-36.416 98.794667-36.416h20.949333c40.533333 0 95.914667-20.437333 126.549333-46.698667l52.373334-44.885333c22.890667-19.626667 68.48-36.416 98.794666-36.416H810.666667a21.333333 21.333333 0 0 0 0-42.666667h-85.12c-40.533333 0-95.936 20.437333-126.570667 46.698667l-52.373333 44.885333C523.690667 559.210667 478.165333 576 447.786667 576h-20.949334c-40.490667 0-95.914667 20.437333-126.549333 46.698667L199.445333 709.12a21.333333 21.333333 0 1 0 27.776 32.384l100.842667-86.442667z"
+                      fill="currentColor"
+                  />
+                  <path
+                      d="M352 373.333333m-53.333333 0a53.333333 53.333333 0 1 0 106.666666 0 53.333333 53.333333 0 1 0-106.666666 0Z"
+                      fill="currentColor"
+                  />
+                </svg>
+              </span>
               选择图片
             </button>
           </div>
           <button class="secondary-btn clear-btn" @click="clearImage" :disabled="!capturedImage">
+            <span class="button-icon button-icon--danger" aria-hidden="true">
+              <svg
+                  class="icon"
+                  viewBox="0 0 1024 1024"
+                  xmlns="http://www.w3.org/2000/svg"
+                  role="img"
+              >
+                <path
+                    d="M926.3 337.9c-22.6-53.3-54.8-101.2-96-142.3-41.1-41.1-89-73.4-142.3-96-55.2-23.4-113.9-35.2-174.3-35.2S394.6 76.2 339.3 99.6c-53.3 22.6-101.2 54.8-142.3 96-41.1 41.1-73.4 89-96 142.3-23.4 55.2-35.2 113.9-35.2 174.3 0 60.4 11.8 119.1 35.2 174.3 22.6 53.3 54.8 101.2 96 142.3 41.1 41.1 89 73.4 142.3 96 55.2 23.4 113.9 35.2 174.3 35.2s119.1-11.8 174.3-35.2c53.3-22.6 101.2-54.8 142.3-96 41.1-41.1 73.4-89 96-142.3 23.4-55.2 35.2-113.9 35.2-174.3 0.1-60.4-11.8-119.1-35.1-174.3zM513.7 879.1c-202.3 0-366.9-164.6-366.9-366.9s164.6-366.9 366.9-366.9c202.3 0 366.9 164.6 366.9 366.9S716 879.1 513.7 879.1z"
+                    fill="currentColor"
+                />
+                <path
+                    d="M695.7 555.7c23.6 0 43-19.3 43-43 0-23.6-19.3-43-43-43l-364-0.5c-23.6 0-43 19.3-43 43s19.3 43 43 43l364 0.5z"
+                    fill="currentColor"
+                />
+              </svg>
+            </span>
             清空
           </button>
         </footer>
@@ -49,9 +105,137 @@
       <section class="panel result-panel">
         <header class="result-header">
           <div class="chip-group">
-            <button class="chip is-active">文字识别</button>
-            <button class="chip">表格识别</button>
-            <button class="chip">公式识别</button>
+            <button
+                class="chip"
+                :class="{ 'is-active': activeMode === 'text' }"
+                @click="selectMode('text')"
+            >
+              <span class="chip-icon" aria-hidden="true">
+                <svg
+                    class="icon"
+                    viewBox="0 0 1024 1024"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                >
+                  <path
+                      d="M555.52 250.624l234.624 521.344h-104.32l-48.384-108.032H399.168l-44.736 108.032H250.24l219.712-521.344H555.52z m-40.96 137.792L438.208 568.96h156.416l-80-180.608z"
+                      fill="currentColor"
+                  />
+                  <path
+                      d="M64.128 718.528L64 951.168h232.704v64.128H0v-296.768h64.128z m959.872 0v296.128h-9.344v0.64h-296.128v-64.064l232.64-0.064v-232.64H1024zM1024 0v296.768h-72.768l-0.064-232.704h-232.64V0H1024zM296.768 0v64.128L64.064 64v232.704H0V0h296.768z"
+                      fill="currentColor"
+                  />
+                </svg>
+              </span>
+              文字识别
+            </button>
+            <button
+                class="chip"
+                :class="{ 'is-active': activeMode === 'table' }"
+                @click="selectMode('table')"
+            >
+              <span class="chip-icon" aria-hidden="true">
+                <svg
+                    class="icon"
+                    viewBox="0 0 1024 1024"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                >
+                  <path
+                      d="M959.825022 384.002258V191.939717C959.825022 121.2479 902.517291 63.940169 831.825474 63.940169H191.939717C121.2479 63.940169 63.940169 121.2479 63.940169 191.939717v639.885757C63.940169 902.517291 121.2479 959.825022 191.939717 959.825022h639.885757c70.691817 0 127.999548-57.307731 127.999548-127.999548V384.002258zM146.66502 146.66502a63.737872 63.737872 0 0 1 45.336109-18.784682h639.997742A63.961844 63.961844 0 0 1 895.884854 192.001129V320.062089H127.880338V192.001129A63.737872 63.737872 0 0 1 146.66502 146.66502z m269.1267 461.308451v-223.971213h192.181751v223.971213h-192.181751z m192.181751 63.940169v223.971214h-192.181751v-223.971214h192.181751z m-256.12192-63.940169H127.880338v-223.971213h223.971213v223.971213z m-205.186531 269.235073a63.466939 63.466939 0 0 1-18.784682-45.209673V671.91364h223.971213v223.971214H192.001129a63.625887 63.625887 0 0 1-45.336109-18.67631z m749.219834-45.209673A63.763159 63.763159 0 0 1 831.998871 895.884854H671.91364v-223.971214h223.971214v160.085231z m0-224.0254h-223.971214v-223.971213h223.971214v223.971213z"
+                      fill="currentColor"
+                  />
+                </svg>
+              </span>
+              表格识别
+            </button>
+            <button
+                class="chip"
+                :class="{ 'is-active': activeMode === 'formula' }"
+                @click="selectMode('formula')"
+            >
+              <span class="chip-icon" aria-hidden="true">
+                <svg
+                    class="icon"
+                    viewBox="0 0 1024 1024"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                >
+                  <path
+                      d="M512 928H128a32 32 0 0 1-26.88-49.92L345.6 512 101.12 145.92A32 32 0 0 1 128 96h384a32 32 0 0 1 0 64H187.52l223.36 334.08a33.28 33.28 0 0 1 0 35.84L187.52 864H512a32 32 0 0 1 0 64zM640 928a36.48 36.48 0 0 1-17.92-5.12 32.64 32.64 0 0 1-8.96-44.8l256-384a32 32 0 0 1 53.76 35.84l-256 384a33.28 33.28 0 0 1-26.88 14.08z"
+                      fill="currentColor"
+                  />
+                  <path
+                      d="M896 928a33.28 33.28 0 0 1-26.88-14.08l-256-384a32 32 0 1 1 53.76-35.84l256 384a32.64 32.64 0 0 1-8.96 44.8 36.48 36.48 0 0 1-17.92 5.12z"
+                      fill="currentColor"
+                  />
+                </svg>
+              </span>
+              公式识别
+            </button>
+            <button
+                class="chip"
+                :class="{ 'is-active': activeMode === 'custom' }"
+                @click="selectMode('custom')"
+            >
+              <span class="chip-icon" aria-hidden="true">
+                <svg
+                    class="icon"
+                    viewBox="0 0 1024 1024"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                >
+                  <path
+                      d="M911.275224 233.685939 825.637477 319.323686 704.59016 198.276368 790.227906 112.638622C816.453389 86.413139 859.427341 86.80945 886.152521 113.551861L910.379215 137.761325C937.104395 164.503736 937.500707 207.460456 911.275224 233.685939ZM293.012048 609.888941 414.059366 730.919028 232.479774 791.468533 293.012048 609.888941ZM801.393552 343.567611 438.28606 706.692334 317.238743 585.645016 680.363465 222.520293 801.393552 343.567611ZM179.666958 189.953826C151.166992 189.953826 127.974154 213.146665 127.974154 241.646631L127.974154 844.798277C127.974154 873.298243 151.166992 896.491082 179.666958 896.491082L782.818604 896.491082C811.31857 896.491082 834.511409 873.298243 834.511409 844.798277L834.511409 360.540082 868.973279 326.078212 868.973279 844.798277C868.973279 892.303964 830.324292 930.952951 782.818604 930.952951L179.666958 930.952951C132.161271 930.952951 93.512284 892.303964 93.512284 844.798277L93.512284 241.646631C93.512284 194.140944 132.161271 155.491957 179.666958 155.491957L698.387023 155.491957 663.925153 189.953826 179.666958 189.953826Z"
+                      fill="currentColor"
+                  />
+                </svg>
+              </span>
+              自定义
+            </button>
+          </div>
+          <div v-if="activeMode === 'custom'" class="custom-instruction-selector">
+            <a-select
+                v-model:value="selectedInstructionId"
+                placeholder="选择指令"
+                style="width: 130px"
+                @change="handleInstructionChange"
+            >
+              <template #dropdownRender="{ menuNode }">
+                <div class="custom-instruction-dropdown">
+                  <component :is="menuNode" />
+                  <div class="custom-instruction-add" @mousedown.prevent @click="showAddInstructionModal = true">
+                    <span class="custom-instruction-add-inner" aria-label="添加自定义指令">
+                      <svg class="add-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+                        <path d="M512 0c-285.257143 0-512 226.742857-512 512s226.742857 512 512 512 512-226.742857 512-512-226.742857-512-512-512z m0 950.857143c-241.371429 0-438.857143-197.485714-438.857143-438.857143s197.485714-438.857143 438.857143-438.857143 438.857143 197.485714 438.857143 438.857143-197.485714 438.857143-438.857143 438.857143z" fill="currentColor"></path>
+                        <path d="M731.428571 475.428571h-182.857142v-182.857142c0-21.942857-14.628571-36.571429-36.571429-36.571429s-36.571429 14.628571-36.571429 36.571429v182.857142h-182.857142c-21.942857 0-36.571429 14.628571-36.571429 36.571429s14.628571 36.571429 36.571429 36.571429h182.857142v182.857142c0 21.942857 14.628571 36.571429 36.571429 36.571429s36.571429-14.628571 36.571429-36.571429v-182.857142h182.857142c21.942857 0 36.571429-14.628571 36.571429-36.571429s-14.628571-36.571429-36.571429-36.571429z" fill="currentColor"></path>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </template>
+              <a-select-option
+                  v-for="instruction in predefinedInstructions"
+                  :key="instruction.id"
+                  :value="instruction.id"
+              >
+                <div class="instruction-option">
+                  <span>{{ instruction.name }}</span>
+                  <svg
+                      v-if="instruction.id.startsWith('custom-')"
+                      class="delete-instruction-icon"
+                      viewBox="0 0 1024 1024"
+                      xmlns="http://www.w3.org/2000/svg"
+                      @click.stop="handleDeleteInstruction(instruction.id)"
+                  >
+                    <path
+                        d="M512 466.944l233.472-233.472a31.744 31.744 0 0 1 45.056 45.056L557.056 512l233.472 233.472a31.744 31.744 0 0 1-45.056 45.056L512 557.056l-233.472 233.472a31.744 31.744 0 0 1-45.056-45.056L466.944 512 233.472 278.528a31.744 31.744 0 0 1 45.056-45.056z"
+                        fill="#5A5A68"
+                    />
+                  </svg>
+                </div>
+              </a-select-option>
+            </a-select>
           </div>
         </header>
 
@@ -65,7 +249,11 @@
               <span></span>
               <span></span>
             </div>
-            <pre class="result-text">{{ displayResult }}</pre>
+            <textarea
+                v-model="processedResult"
+                class="result-text editable"
+                spellcheck="false"
+            ></textarea>
           </div>
           <div v-else-if="isUploading">
             <a-space>
@@ -74,12 +262,13 @@
           </div>
           <div v-else class="result-placeholder">
             <div class="placeholder-icon">Tt</div>
-            <p>OCR 文字识别结果</p>
+            <p>{{ placeholderText }}</p>
           </div>
         </div>
 
         <footer class="result-footer">
           <button
+              v-if="activeMode === 'text'"
               class="secondary-btn audio-footer-btn"
               type="button"
               :disabled="!audioUrl"
@@ -110,27 +299,170 @@
             朗读
           </button>
 
+          <button
+              v-if="activeMode === 'text'"
+              class="secondary-btn toggle-newlines-btn"
+              type="button"
+              @click="removeNewlines = !removeNewlines"
+          >
+            <span class="button-icon" aria-hidden="true">
+              <svg
+                  class="icon"
+                  viewBox="0 0 1024 1024"
+                  xmlns="http://www.w3.org/2000/svg"
+                  role="img"
+              >
+                <path
+                    d="M211.3 503.5h472.8c18.6 0 33.7-15.1 33.7-33.7v-2.5c0-18.6-15.1-33.7-33.7-33.7H211.3c-18.6 0-33.7 15.1-33.7 33.7v2.5c0 18.6 15.1 33.7 33.7 33.7zM211.3 312.7h557.8c18.6 0 33.7-15.1 33.7-33.7v-2.5c0-18.6-15.1-33.7-33.7-33.7H211.3c-18.6 0-33.7 15.1-33.7 33.7v2.5c0 18.6 15.1 33.7 33.7 33.7zM429.1 612.1H211.3c-18.6 0-33.7 15.1-33.7 33.7v2.5c0 18.6 15.1 33.7 33.7 33.7h217.8c18.6 0 33.7-15.1 33.7-33.7v-2.5c0-18.6-15.2-33.7-33.7-33.7zM812.7 473.3h-5.3c-18.6 0-33.7 15.1-33.7 33.7v121.5c0 1.9-1.6 3.5-3.5 3.5h-93.8v-64.2c0-5.8-3.3-11-8.5-13.6-5.2-2.5-11.3-1.9-15.9 1.6l-108.7 84.5c-7.1 5.5-11.6 13.5-12.7 22.4-1.1 8.9 1.3 17.8 6.9 24.9 1.7 2.2 3.7 4.1 5.9 5.8L652.1 778a15.17 15.17 0 0 0 15.9 1.7c5.2-2.5 8.5-7.8 8.5-13.6v-64.2h136.3c18.6 0 33.7-15.1 33.7-33.7V507c-0.1-18.6-15.2-33.7-33.8-33.7z"
+                    fill="currentColor"
+                />
+              </svg>
+            </span>
+            去除换行
+          </button>
+
           <div class="footer-actions">
-            <button class="secondary-btn" :disabled="!displayResult" @click="copyResult">
+            <button class="secondary-btn icon-btn" :disabled="!displayResult" @click="copyResult">
+              <span class="button-icon" aria-hidden="true">
+                <svg
+                    class="icon"
+                    viewBox="0 0 1024 1024"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                >
+                  <path
+                      d="M720 192h-544A80.096 80.096 0 0 0 96 272v608C96 924.128 131.904 960 176 960h544c44.128 0 80-35.872 80-80v-608C800 227.904 764.128 192 720 192z m16 688c0 8.8-7.2 16-16 16h-544a16 16 0 0 1-16-16v-608a16 16 0 0 1 16-16h544a16 16 0 0 1 16 16v608z"
+                      fill="currentColor"
+                  />
+                  <path
+                      d="M848 64h-544a32 32 0 0 0 0 64h544a16 16 0 0 1 16 16v608a32 32 0 1 0 64 0v-608C928 99.904 892.128 64 848 64z"
+                      fill="currentColor"
+                  />
+                  <path
+                      d="M608 360H288a32 32 0 0 0 0 64h320a32 32 0 1 0 0-64zM608 520H288a32 32 0 1 0 0 64h320a32 32 0 1 0 0-64zM480 678.656H288a32 32 0 1 0 0 64h192a32 32 0 1 0 0-64z"
+                      fill="currentColor"
+                  />
+                </svg>
+              </span>
               复制结果
             </button>
-            <button class="primary-btn" :disabled="!displayResult" @click="openTranslate">
+            <button class="secondary-btn icon-btn" :disabled="!displayResult" @click="openTranslate">
+              <span class="button-icon" aria-hidden="true">
+                <svg
+                    class="icon"
+                    viewBox="0 0 1024 1024"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                >
+                  <path
+                      d="M414.254545 595.781818H172.218182c-86.109091 0-155.927273-67.490909-155.927273-148.945454V218.763636C16.290909 137.309091 86.109091 69.818182 172.218182 69.818182h242.036363c86.109091 0 155.927273 67.490909 155.927273 148.945454v228.072728c-2.327273 81.454545-69.818182 148.945455-155.927273 148.945454zM172.218182 137.309091c-48.872727 0-86.109091 34.909091-86.109091 81.454545v228.072728c0 44.218182 39.563636 81.454545 86.109091 81.454545h242.036363c48.872727 0 86.109091-34.909091 86.109091-81.454545V218.763636c0-44.218182-39.563636-81.454545-86.109091-81.454545H172.218182z"
+                      fill="currentColor"
+                  />
+                  <path
+                      d="M837.818182 861.090909H595.781818c-90.763636 0-155.927273-69.818182-155.927273-167.563636v-141.963637c0-18.618182 16.290909-34.909091 34.909091-34.909091s34.909091 16.290909 34.909091 34.909091v141.963637c0 58.181818 34.909091 100.072727 86.109091 100.072727H837.818182c48.872727 0 86.109091-34.909091 86.109091-81.454545v-228.072728c0-44.218182-39.563636-81.454545-86.109091-81.454545H544.581818c-18.618182 0-34.909091-16.290909-34.909091-34.909091s16.290909-34.909091 34.909091-34.909091H837.818182c86.109091 0 155.927273 67.490909 155.927273 148.945455v228.072727c0 86.109091-69.818182 151.272727-155.927273 151.272727zM262.981818 847.127273c-102.4 0-183.854545-74.472727-183.854545-167.563637 0-18.618182 16.290909-34.909091 34.909091-34.909091s34.909091 16.290909 34.909091 34.909091c0 55.854545 51.2 100.072727 116.363636 100.072728 18.618182 0 34.909091 16.290909 34.909091 34.909091-4.654545 18.618182-18.618182 32.581818-37.236364 32.581818zM861.090909 281.6c-18.618182 0-34.909091-16.290909-34.909091-34.909091 0-55.854545-51.2-100.072727-116.363636-100.072727-18.618182 0-34.909091-16.290909-34.909091-34.909091s16.290909-34.909091 34.909091-34.909091c102.4 0 183.854545 74.472727 183.854545 167.563636 2.327273 20.945455-11.636364 37.236364-32.581818 37.236364z"
+                      fill="currentColor"
+                  />
+                  <path
+                      d="M660.945455 686.545455h-39.563637l88.436364-165.236364h41.890909l88.436364 165.236364h-41.89091l-23.272727-46.545455h-93.090909l-20.945454 46.545455z m69.818181-139.636364l-37.236363 72.145454H768l-37.236364-72.145454z"
+                      fill="currentColor"
+                  />
+                  <path
+                      d="M286.254545 200.145455h23.272728v39.563636H395.636364V349.090909h-23.272728v-13.963636h-62.836363v76.8h-23.272728v-76.8H223.418182v13.963636h-23.272727v-109.381818h86.10909V200.145455z m-62.836363 116.363636h62.836363v-55.854546H223.418182v55.854546z m86.109091 0H372.363636v-55.854546h-62.836363v55.854546z"
+                      fill="currentColor"
+                  />
+                </svg>
+              </span>
               前往翻译
             </button>
           </div>
         </footer>
       </section>
     </div>
+
+    <!-- 添加自定义指令模态框 -->
+    <a-modal
+        v-model:visible="showAddInstructionModal"
+        title="添加自定义指令"
+        ok-text="添加"
+        cancel-text="取消"
+        @ok="handleAddInstruction"
+    >
+      <a-form layout="vertical">
+        <a-form-item label="指令名称">
+          <a-input
+              v-model:value="newInstructionName"
+              placeholder="例如：提取收据信息"
+          />
+        </a-form-item>
+        <a-form-item label="提示词">
+          <a-textarea
+              v-model:value="newInstructionPrompt"
+              placeholder="例如：从图片中提取收据的所有信息，包括商家名称、金额、日期等"
+              :rows="4"
+          />
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed, onBeforeUnmount, onMounted, ref} from 'vue'
+import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue'
 import {streamChat} from '@/api/chat'
 
 const OCR_APP_ID = import.meta.env.VITE_APP_ID as string | undefined
 const USER_ID = import.meta.env.VITE_USER_ID || 'default-user'
-const OCR_PROMPT = '提取这张图片上的文字'
+
+type RecognitionMode = 'text' | 'table' | 'formula' | 'custom'
+
+interface CustomInstruction {
+  id: string
+  name: string
+  prompt: string
+}
+
+const handlePreviewWheel = (event: WheelEvent) => {
+  if (!capturedImage.value) return
+  event.preventDefault()
+  const delta = event.deltaY
+  const step = delta > 0 ? -0.1 : 0.1
+  const nextScale = previewScale.value + step
+  previewScale.value = Math.min(Math.max(nextScale, 0.5), 3)
+}
+
+const PROMPTS: Record<Exclude<RecognitionMode, 'custom'>, string> = {
+  text: '提取这张图片上的文字',
+  table: '提取图片中的表格内容，使用 Markdown 表格输出结果',
+  formula: '提取图片上的公式，输出对应的LaTeX代码，使用斜杠换行',
+}
+
+const PREDEFINED_INSTRUCTIONS: CustomInstruction[] = [
+  {
+    id: 'personal-info',
+    name: '提取个人信息',
+    prompt: '从图片中提取用户的个人信息，包括姓名、性别、年龄、身份证号、联系方式等，以结构化格式输出',
+  },
+  {
+    id: 'contact-info',
+    name: '提取联系方式',
+    prompt: '从图片中提取所有联系方式，包括电话号码、邮箱、地址、微信号、QQ号等',
+  },
+  {
+    id: 'financial-info',
+    name: '提取财务信息',
+    prompt: '从图片中提取财务相关信息，包括金额、账户、交易记录、发票号等',
+  },
+  {
+    id: 'product-info',
+    name: '提取产品信息',
+    prompt: '从图片中提取产品相关信息，包括产品名称、规格、价格、生产日期、有效期等',
+  },
+  {
+    id: 'document-info',
+    name: '提取文档信息',
+    prompt: '从图片中提取文档的关键信息，包括标题、日期、作者、版本号等元数据',
+  },
+]
 
 const ocrPageRef = ref<HTMLElement | null>(null)
 const capturedImage = ref<string | null>(null)
@@ -139,14 +471,62 @@ const isProcessing = ref(false)
 const isUploading = ref(false)
 const ocrError = ref<string | null>(null)
 const rawResult = ref('')
+const removeNewlines = ref(false)
 const audioUrl = ref('')
 const isPlayingAudio = ref(false)
 let audioInstance: HTMLAudioElement | null = null
 // 去除换行功能已移除，保留结果原始格式
 const streamAbort = ref<(() => void) | null>(null)
+const activeMode = ref<RecognitionMode>('text')
+const lastUploadedFile = ref<File | null>(null)
+const selectedInstructionId = ref<string>('')
+const predefinedInstructions = ref<CustomInstruction[]>(PREDEFINED_INSTRUCTIONS)
+const showAddInstructionModal = ref(false)
+const newInstructionName = ref('')
+const newInstructionPrompt = ref('')
+const previewScale = ref(1)
+
+const processedResult = computed({
+  get() {
+    if (!rawResult.value) return ''
+    return removeNewlines.value
+        ? rawResult.value.replace(/\r?\n/g, '')
+        : rawResult.value
+  },
+  set(value: string) {
+    rawResult.value = value
+  },
+})
 
 const displayResult = computed(() => {
-  return rawResult.value
+  return processedResult.value
+})
+
+const previewImageStyle = computed(() => ({
+  transform: `scale(${previewScale.value})`,
+  transformOrigin: 'center',
+}))
+
+const PLACEHOLDER_COPY: Record<Exclude<RecognitionMode, 'custom'>, string> = {
+  text: 'OCR 文字识别结果',
+  table: 'OCR 表格识别结果',
+  formula: 'OCR 公式识别结果',
+}
+
+const placeholderText = computed(() => {
+  if (activeMode.value === 'custom') {
+    const instruction = predefinedInstructions.value.find(i => i.id === selectedInstructionId.value)
+    return instruction ? `自定义指令：${instruction.name}` : '请选择或添加自定义指令'
+  }
+  return PLACEHOLDER_COPY[activeMode.value]
+})
+
+const currentPrompt = computed(() => {
+  if (activeMode.value === 'custom') {
+    const instruction = predefinedInstructions.value.find(i => i.id === selectedInstructionId.value)
+    return instruction?.prompt || ''
+  }
+  return PROMPTS[activeMode.value]
 })
 
 const clearImage = () => {
@@ -164,6 +544,7 @@ const clearImage = () => {
   streamAbort.value = null
   isProcessing.value = false
   isUploading.value = false
+  previewScale.value = 1
 }
 
 const triggerFileSelect = () => {
@@ -193,6 +574,7 @@ const handleDropzonePaste = async (event: ClipboardEvent) => {
         event.preventDefault()
         isUploading.value = true
         capturedImage.value = await fileToDataUrl(file)
+        lastUploadedFile.value = file
         await startRecognition(file)
       } catch (error) {
         console.error('粘贴图片处理失败', error)
@@ -209,6 +591,7 @@ const handleDropzoneDrop = async (event: DragEvent) => {
   if (!files || files.length === 0) return
 
   const file = files[0]
+  if (!file) return
   if (!file.type.startsWith('image/')) {
     ocrError.value = '请拖入图片文件'
     return
@@ -217,6 +600,7 @@ const handleDropzoneDrop = async (event: DragEvent) => {
   try {
     isUploading.value = true
     capturedImage.value = await fileToDataUrl(file)
+    lastUploadedFile.value = file
     await startRecognition(file)
   } catch (error) {
     console.error('拖放图片处理失败', error)
@@ -245,6 +629,7 @@ const handleFileChange = async (event: Event) => {
   try {
     isUploading.value = true
     capturedImage.value = await fileToDataUrl(file)
+    lastUploadedFile.value = file
     await startRecognition(file)
   } catch (error) {
     console.error('读取图片失败', error)
@@ -263,6 +648,8 @@ const startRecognition = async (file: File) => {
     return
   }
 
+  lastUploadedFile.value = file
+
   streamAbort.value?.()
   rawResult.value = ''
   ocrError.value = null
@@ -272,34 +659,30 @@ const startRecognition = async (file: File) => {
     streamAbort.value = await streamChat(
         {
           appId: OCR_APP_ID,
-          query: OCR_PROMPT,
+          query: currentPrompt.value,
           userId: USER_ID,
           file,
         },
         (event) => {
-          const isChunkEvent = event.type === 'chunk' || event.data?.type === 'chunk'
-          const lane = event.data?.lane
-          const payload = event.data?.payload ?? event.data ?? event
-          const textCandidate =
-              typeof payload === 'string'
-                  ? payload
-                  : payload?.text ?? payload?.content ?? payload?.result ?? payload?.message ?? ''
+          const value = typeof event.data === 'string' ? event.data : event.data?.v ?? ''
+          if (typeof value !== 'string' || !value) return
 
-          if (!isChunkEvent || typeof textCandidate !== 'string' || !textCandidate) return
+          const trimmed = value.trim()
+          const isUrl = /^https?:\/\//i.test(trimmed)
 
-          if (lane === 'output_isn9lm_text_1') {
-            rawResult.value += textCandidate
-            isUploading.value = false
-          } else if (lane === 'output_ggdchn_text_1') {
-            audioUrl.value = textCandidate
-            // 新的音频地址到来时，重置播放状态
+          if (isUrl) {
+            audioUrl.value = trimmed
             isPlayingAudio.value = false
             if (audioInstance) {
               audioInstance.pause()
               audioInstance.currentTime = 0
               audioInstance = null
             }
+            return
           }
+
+          rawResult.value += value
+          isUploading.value = false
         },
         (error) => {
           console.error('OCR 请求失败', error)
@@ -339,6 +722,57 @@ const openTranslate = () => {
   if (!displayResult.value) return
   const url = `https://fanyi.baidu.com/#zh/en/${encodeURIComponent(displayResult.value)}`
   window.open(url, '_blank', 'noopener')
+}
+
+const selectMode = async (mode: RecognitionMode) => {
+  if (activeMode.value === mode) return
+
+  // 切换模式时仅更新当前模式，并清空结果区，避免自动重新发起请求
+  activeMode.value = mode
+  rawResult.value = ''
+  audioUrl.value = ''
+  isPlayingAudio.value = false
+  ocrError.value = null
+  
+  // 如果切换到自定义模式，默认选择第一条指令
+  if (mode === 'custom') {
+    selectedInstructionId.value = predefinedInstructions.value[0]?.id || ''
+  }
+}
+
+const handleInstructionChange = (value: string) => {
+  selectedInstructionId.value = value
+}
+
+const handleAddInstruction = () => {
+  if (!newInstructionName.value.trim() || !newInstructionPrompt.value.trim()) {
+    return
+  }
+
+  const newInstruction: CustomInstruction = {
+    id: `custom-${Date.now()}`,
+    name: newInstructionName.value,
+    prompt: newInstructionPrompt.value,
+  }
+
+  predefinedInstructions.value.push(newInstruction)
+  selectedInstructionId.value = newInstruction.id
+
+  // 重置表单并关闭模态框
+  newInstructionName.value = ''
+  newInstructionPrompt.value = ''
+  showAddInstructionModal.value = false
+}
+
+const handleDeleteInstruction = (instructionId: string) => {
+  const index = predefinedInstructions.value.findIndex(i => i.id === instructionId)
+  if (index > -1) {
+    predefinedInstructions.value.splice(index, 1)
+    // 如果删除的是当前选中的指令，重置选择
+    if (selectedInstructionId.value === instructionId) {
+      selectedInstructionId.value = predefinedInstructions.value[0]?.id || ''
+    }
+  }
 }
 
 const handlePlayAudio = () => {
@@ -427,6 +861,9 @@ onBeforeUnmount(() => {
   font-size: 15px;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .tab:hover {
@@ -442,6 +879,32 @@ onBeforeUnmount(() => {
 .mode-chip svg {
   width: 20px;
   height: 20px;
+}
+
+.tab-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.tab-icon .icon {
+  width: 100%;
+  height: 100%;
+}
+
+.chip-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+}
+
+.chip-icon .icon {
+  width: 100%;
+  height: 100%;
 }
 
 .ocr-content {
@@ -461,11 +924,13 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 0;
 }
 
 .upload-panel {
   gap: 12px;
   flex: 1;
+  min-height: 0;
 }
 
 .dropzone {
@@ -473,12 +938,15 @@ onBeforeUnmount(() => {
   padding: 12px 16px;
   text-align: center;
   background: #f8fafc;
-  flex: 1;
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 8px;
+  overflow: hidden;
 }
 
 .dropzone.has-preview {
@@ -488,11 +956,14 @@ onBeforeUnmount(() => {
 .dropzone-preview {
   width: 100%;
   height: auto;
-  max-height: 200px;
+  max-height: 100%;
+  max-width: 100%;
   flex: 0 0 auto;
   border-radius: 18px;
   object-fit: contain;
   background: #f8fafc;
+  transition: transform 0.2s ease;
+  cursor: grab;
 }
 
 .dropzone-icon svg {
@@ -527,12 +998,37 @@ onBeforeUnmount(() => {
   gap: 12px;
 }
 
+.button-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+}
+
+.button-icon .icon {
+  width: 100%;
+  height: 100%;
+}
+
+.button-icon--danger {
+  color: #d81e06;
+}
+
+.upload-btn {
+  display: inline-flex;
+  align-items: center;
+}
+
 .upload-btn svg {
   width: 20px;
   height: 20px;
 }
 
 .clear-btn {
+  display: inline-flex;
+  align-items: center;
   background: rgba(239, 68, 68, 0.08);
   color: #b91c1c;
 }
@@ -551,6 +1047,55 @@ onBeforeUnmount(() => {
   justify-content: space-between;
   align-items: center;
   height: 56px;
+  gap: 16px;
+}
+
+.custom-instruction-selector {
+  display: flex;
+  align-items: center;
+}
+
+.instruction-option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.instruction-option span {
+  flex: 1;
+  text-align: center;
+}
+
+.delete-instruction-icon {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.2s;
+}
+
+.delete-instruction-icon:hover {
+  opacity: 0.7;
+}
+
+.custom-instruction-add {
+  display: flex;
+  justify-content: center;
+}
+
+.custom-instruction-add-inner {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: #76a9e3;
+}
+
+.custom-instruction-add-inner:hover {
+  color: #4d8e
 }
 
 .chip-group {
@@ -569,6 +1114,9 @@ onBeforeUnmount(() => {
   color: #4b5563;
   cursor: pointer;
   font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .chip.is-active {
@@ -628,9 +1176,9 @@ onBeforeUnmount(() => {
   height: 100%;
   border-radius: 18px;
   background: #f8fafc;
-  padding: 16px 20px 48px;
+  padding: 0;
   text-align: left;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .result-text {
@@ -642,6 +1190,23 @@ onBeforeUnmount(() => {
   color: #0f172a;
 }
 
+.result-text.editable {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 16px 20px 48px;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  overflow: hidden;
+}
+
+.result-text.editable::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 .audio-footer-btn {
   display: inline-flex;
   align-items: center;
@@ -650,6 +1215,26 @@ onBeforeUnmount(() => {
   box-shadow: none;
   padding-left: 0;
   padding-right: 0;
+}
+
+.toggle-newlines-btn {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+  min-width: 96px;
+  justify-content: center;
+}
+
+.result-options {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.result-option-label {
+  user-select: none;
 }
 
 .audio-icon-wrapper {
@@ -772,6 +1357,12 @@ onBeforeUnmount(() => {
 .footer-actions {
   display: flex;
   gap: 12px;
+  margin-left: auto;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
 }
 
 .secondary-btn,

@@ -86,7 +86,9 @@ public class BailingController {
                 Iterable<Map<String, Object>> streamResponse =
                         (Iterable<Map<String, Object>>) hbotClient.chat(chatRequest);
 
-                return Flux.fromIterable(streamResponse);
+                return Flux.fromIterable(streamResponse)
+                        .filter(this::isChunkWithText)
+                        .map(this::toSimpleChunk);
             } catch (HbotClientConfigException | HbotHttpResponseException e) {
                 return Flux.error(e);
             } catch (Exception e) {
@@ -195,6 +197,27 @@ public class BailingController {
             return FileType.VIDEO;
         }
         return FileType.FILE;
+    }
+
+    private boolean isChunkWithText(Map<String, Object> event) {
+        if (event == null || !"chunk".equals(event.get("type"))) {
+            return false;
+        }
+
+        Object payloadObj = event.get("payload");
+        if (!(payloadObj instanceof Map<?, ?> payload)) {
+            return false;
+        }
+
+        Object textObj = payload.get("text");
+        return textObj instanceof String text && !text.isEmpty();
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> toSimpleChunk(Map<String, Object> event) {
+        Map<String, Object> payload = (Map<String, Object>) event.get("payload");
+        String text = (String) payload.get("text");
+        return Map.of("v", text);
     }
 }
 
