@@ -4,7 +4,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -46,6 +49,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BailingController {
 
+    private static final Logger logger = LoggerFactory.getLogger(BailingController.class);
+
     @Resource
     private final HbotClient hbotClient;
 
@@ -56,7 +61,10 @@ public class BailingController {
             @Parameter(description = "用户查询") @RequestParam String query,
             @Parameter(description = "用户ID") @RequestParam String userId,
             @Parameter(description = "会话ID") @RequestParam(required = false) String conversationId,
-            @Parameter(description = "上传的文件") @RequestParam(value = "file", required = false) MultipartFile uploadedFile) {
+            @Parameter(description = "上传的文件") @RequestParam(value = "file", required = false) MultipartFile uploadedFile,
+            HttpServletRequest request) {
+
+        logger.info("stream-chat-with-file 协议: {}, scheme: {}", request.getProtocol(), request.getScheme());
 
         List<File> files;
         try {

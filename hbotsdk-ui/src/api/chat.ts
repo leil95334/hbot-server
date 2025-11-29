@@ -47,7 +47,7 @@ export async function streamChat(
     formData.append('file', params.file)
   }
 
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://localhost:8443'
   const endpoint = options?.endpoint ?? '/api/bailing/stream-chat-with-file'
   const url = `${apiBaseUrl}${endpoint}`
 
