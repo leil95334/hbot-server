@@ -104,95 +104,97 @@
 
       <section class="panel result-panel">
         <header class="result-header">
-          <div class="chip-group">
-            <button
-                class="chip"
-                :class="{ 'is-active': activeMode === 'text' }"
-                @click="selectMode('text')"
-            >
-              <span class="chip-icon" aria-hidden="true">
-                <svg
-                    class="icon"
-                    viewBox="0 0 1024 1024"
-                    xmlns="http://www.w3.org/2000/svg"
-                    role="img"
-                >
-                  <path
-                      d="M555.52 250.624l234.624 521.344h-104.32l-48.384-108.032H399.168l-44.736 108.032H250.24l219.712-521.344H555.52z m-40.96 137.792L438.208 568.96h156.416l-80-180.608z"
-                      fill="currentColor"
-                  />
-                  <path
-                      d="M64.128 718.528L64 951.168h232.704v64.128H0v-296.768h64.128z m959.872 0v296.128h-9.344v0.64h-296.128v-64.064l232.64-0.064v-232.64H1024zM1024 0v296.768h-72.768l-0.064-232.704h-232.64V0H1024zM296.768 0v64.128L64.064 64v232.704H0V0h296.768z"
-                      fill="currentColor"
-                  />
-                </svg>
-              </span>
-              文字识别
-            </button>
-            <button
-                class="chip"
-                :class="{ 'is-active': activeMode === 'table' }"
-                @click="selectMode('table')"
-            >
-              <span class="chip-icon" aria-hidden="true">
-                <svg
-                    class="icon"
-                    viewBox="0 0 1024 1024"
-                    xmlns="http://www.w3.org/2000/svg"
-                    role="img"
-                >
-                  <path
-                      d="M959.825022 384.002258V191.939717C959.825022 121.2479 902.517291 63.940169 831.825474 63.940169H191.939717C121.2479 63.940169 63.940169 121.2479 63.940169 191.939717v639.885757C63.940169 902.517291 121.2479 959.825022 191.939717 959.825022h639.885757c70.691817 0 127.999548-57.307731 127.999548-127.999548V384.002258zM146.66502 146.66502a63.737872 63.737872 0 0 1 45.336109-18.784682h639.997742A63.961844 63.961844 0 0 1 895.884854 192.001129V320.062089H127.880338V192.001129A63.737872 63.737872 0 0 1 146.66502 146.66502z m269.1267 461.308451v-223.971213h192.181751v223.971213h-192.181751z m192.181751 63.940169v223.971214h-192.181751v-223.971214h192.181751z m-256.12192-63.940169H127.880338v-223.971213h223.971213v223.971213z m-205.186531 269.235073a63.466939 63.466939 0 0 1-18.784682-45.209673V671.91364h223.971213v223.971214H192.001129a63.625887 63.625887 0 0 1-45.336109-18.67631z m749.219834-45.209673A63.763159 63.763159 0 0 1 831.998871 895.884854H671.91364v-223.971214h223.971214v160.085231z m0-224.0254h-223.971214v-223.971213h223.971214v223.971213z"
-                      fill="currentColor"
-                  />
-                </svg>
-              </span>
-              表格识别
-            </button>
-            <button
-                class="chip"
-                :class="{ 'is-active': activeMode === 'formula' }"
-                @click="selectMode('formula')"
-            >
-              <span class="chip-icon" aria-hidden="true">
-                <svg
-                    class="icon"
-                    viewBox="0 0 1024 1024"
-                    xmlns="http://www.w3.org/2000/svg"
-                    role="img"
-                >
-                  <path
-                      d="M512 928H128a32 32 0 0 1-26.88-49.92L345.6 512 101.12 145.92A32 32 0 0 1 128 96h384a32 32 0 0 1 0 64H187.52l223.36 334.08a33.28 33.28 0 0 1 0 35.84L187.52 864H512a32 32 0 0 1 0 64zM640 928a36.48 36.48 0 0 1-17.92-5.12 32.64 32.64 0 0 1-8.96-44.8l256-384a32 32 0 0 1 53.76 35.84l-256 384a33.28 33.28 0 0 1-26.88 14.08z"
-                      fill="currentColor"
-                  />
-                  <path
-                      d="M896 928a33.28 33.28 0 0 1-26.88-14.08l-256-384a32 32 0 1 1 53.76-35.84l256 384a32.64 32.64 0 0 1-8.96 44.8 36.48 36.48 0 0 1-17.92 5.12z"
-                      fill="currentColor"
-                  />
-                </svg>
-              </span>
-              公式识别
-            </button>
-            <button
-                class="chip"
-                :class="{ 'is-active': activeMode === 'custom' }"
-                @click="selectMode('custom')"
-            >
-              <span class="chip-icon" aria-hidden="true">
-                <svg
-                    class="icon"
-                    viewBox="0 0 1024 1024"
-                    xmlns="http://www.w3.org/2000/svg"
-                    role="img"
-                >
-                  <path
-                      d="M911.275224 233.685939 825.637477 319.323686 704.59016 198.276368 790.227906 112.638622C816.453389 86.413139 859.427341 86.80945 886.152521 113.551861L910.379215 137.761325C937.104395 164.503736 937.500707 207.460456 911.275224 233.685939ZM293.012048 609.888941 414.059366 730.919028 232.479774 791.468533 293.012048 609.888941ZM801.393552 343.567611 438.28606 706.692334 317.238743 585.645016 680.363465 222.520293 801.393552 343.567611ZM179.666958 189.953826C151.166992 189.953826 127.974154 213.146665 127.974154 241.646631L127.974154 844.798277C127.974154 873.298243 151.166992 896.491082 179.666958 896.491082L782.818604 896.491082C811.31857 896.491082 834.511409 873.298243 834.511409 844.798277L834.511409 360.540082 868.973279 326.078212 868.973279 844.798277C868.973279 892.303964 830.324292 930.952951 782.818604 930.952951L179.666958 930.952951C132.161271 930.952951 93.512284 892.303964 93.512284 844.798277L93.512284 241.646631C93.512284 194.140944 132.161271 155.491957 179.666958 155.491957L698.387023 155.491957 663.925153 189.953826 179.666958 189.953826Z"
-                      fill="currentColor"
-                  />
-                </svg>
-              </span>
-              自定义
-            </button>
+          <div class="header-left">
+            <div class="chip-group">
+              <button
+                  class="chip"
+                  :class="{ 'is-active': activeMode === 'text' }"
+                  @click="selectMode('text')"
+              >
+                <span class="chip-icon" aria-hidden="true">
+                  <svg
+                      class="icon"
+                      viewBox="0 0 1024 1024"
+                      xmlns="http://www.w3.org/2000/svg"
+                      role="img"
+                  >
+                    <path
+                        d="M555.52 250.624l234.624 521.344h-104.32l-48.384-108.032H399.168l-44.736 108.032H250.24l219.712-521.344H555.52z m-40.96 137.792L438.208 568.96h156.416l-80-180.608z"
+                        fill="currentColor"
+                    />
+                    <path
+                        d="M64.128 718.528L64 951.168h232.704v64.128H0v-296.768h64.128z m959.872 0v296.128h-9.344v0.64h-296.128v-64.064l232.64-0.064v-232.64H1024zM1024 0v296.768h-72.768l-0.064-232.704h-232.64V0H1024zM296.768 0v64.128L64.064 64v232.704H0V0h296.768z"
+                        fill="currentColor"
+                    />
+                  </svg>
+                </span>
+                文字识别
+              </button>
+              <button
+                  class="chip"
+                  :class="{ 'is-active': activeMode === 'table' }"
+                  @click="selectMode('table')"
+              >
+                <span class="chip-icon" aria-hidden="true">
+                  <svg
+                      class="icon"
+                      viewBox="0 0 1024 1024"
+                      xmlns="http://www.w3.org/2000/svg"
+                      role="img"
+                  >
+                    <path
+                        d="M959.825022 384.002258V191.939717C959.825022 121.2479 902.517291 63.940169 831.825474 63.940169H191.939717C121.2479 63.940169 63.940169 121.2479 63.940169 191.939717v639.885757C63.940169 902.517291 121.2479 959.825022 191.939717 959.825022h639.885757c70.691817 0 127.999548-57.307731 127.999548-127.999548V384.002258zM146.66502 146.66502a63.737872 63.737872 0 0 1 45.336109-18.784682h639.997742A63.961844 63.961844 0 0 1 895.884854 192.001129V320.062089H127.880338V192.001129A63.737872 63.737872 0 0 1 146.66502 146.66502z m269.1267 461.308451v-223.971213h192.181751v223.971213h-192.181751z m192.181751 63.940169v223.971214h-192.181751v-223.971214h192.181751z m-256.12192-63.940169H127.880338v-223.971213h223.971213v223.971213z m-205.186531 269.235073a63.466939 63.466939 0 0 1-18.784682-45.209673V671.91364h223.971213v223.971214H192.001129a63.625887 63.625887 0 0 1-45.336109-18.67631z m749.219834-45.209673A63.763159 63.763159 0 0 1 831.998871 895.884854H671.91364v-223.971214h223.971214v160.085231z m0-224.0254h-223.971214v-223.971213h223.971214v223.971213z"
+                        fill="currentColor"
+                    />
+                  </svg>
+                </span>
+                表格识别
+              </button>
+              <button
+                  class="chip"
+                  :class="{ 'is-active': activeMode === 'formula' }"
+                  @click="selectMode('formula')"
+              >
+                <span class="chip-icon" aria-hidden="true">
+                  <svg
+                      class="icon"
+                      viewBox="0 0 1024 1024"
+                      xmlns="http://www.w3.org/2000/svg"
+                      role="img"
+                  >
+                    <path
+                        d="M512 928H128a32 32 0 0 1-26.88-49.92L345.6 512 101.12 145.92A32 32 0 0 1 128 96h384a32 32 0 0 1 0 64H187.52l223.36 334.08a33.28 33.28 0 0 1 0 35.84L187.52 864H512a32 32 0 0 1 0 64zM640 928a36.48 36.48 0 0 1-17.92-5.12 32.64 32.64 0 0 1-8.96-44.8l256-384a32 32 0 0 1 53.76 35.84l-256 384a33.28 33.28 0 0 1-26.88 14.08z"
+                        fill="currentColor"
+                    />
+                    <path
+                        d="M896 928a33.28 33.28 0 0 1-26.88-14.08l-256-384a32 32 0 1 1 53.76-35.84l256 384a32.64 32.64 0 0 1-8.96 44.8 36.48 36.48 0 0 1-17.92 5.12z"
+                        fill="currentColor"
+                    />
+                  </svg>
+                </span>
+                公式识别
+              </button>
+              <button
+                  class="chip"
+                  :class="{ 'is-active': activeMode === 'custom' }"
+                  @click="selectMode('custom')"
+              >
+                <span class="chip-icon" aria-hidden="true">
+                  <svg
+                      class="icon"
+                      viewBox="0 0 1024 1024"
+                      xmlns="http://www.w3.org/2000/svg"
+                      role="img"
+                  >
+                    <path
+                        d="M911.275224 233.685939 825.637477 319.323686 704.59016 198.276368 790.227906 112.638622C816.453389 86.413139 859.427341 86.80945 886.152521 113.551861L910.379215 137.761325C937.104395 164.503736 937.500707 207.460456 911.275224 233.685939ZM293.012048 609.888941 414.059366 730.919028 232.479774 791.468533 293.012048 609.888941ZM801.393552 343.567611 438.28606 706.692334 317.238743 585.645016 680.363465 222.520293 801.393552 343.567611ZM179.666958 189.953826C151.166992 189.953826 127.974154 213.146665 127.974154 241.646631L127.974154 844.798277C127.974154 873.298243 151.166992 896.491082 179.666958 896.491082L782.818604 896.491082C811.31857 896.491082 834.511409 873.298243 834.511409 844.798277L834.511409 360.540082 868.973279 326.078212 868.973279 844.798277C868.973279 892.303964 830.324292 930.952951 782.818604 930.952951L179.666958 930.952951C132.161271 930.952951 93.512284 892.303964 93.512284 844.798277L93.512284 241.646631C93.512284 194.140944 132.161271 155.491957 179.666958 155.491957L698.387023 155.491957 663.925153 189.953826 179.666958 189.953826Z"
+                        fill="currentColor"
+                    />
+                  </svg>
+                </span>
+                自定义
+              </button>
+            </div>
           </div>
           <div v-if="activeMode === 'custom'" class="custom-instruction-selector">
             <a-select
@@ -321,6 +323,22 @@
             去除换行
           </button>
 
+          <label class="vision-model-toggle">
+            <input 
+                type="checkbox" 
+                v-model="useVisionModel"
+                :disabled="isProcessing || isTesseractProcessing"
+            />
+            <span class="toggle-label">
+              <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" role="img">
+                <path d="M512 192c-176.732 0-329.142 143.268-329.142 320s152.41 320 329.142 320 329.142-143.268 329.142-320-152.41-320-329.142-320z m0 554.182c-129.396 0-234.182-104.786-234.182-234.182S382.604 277.818 512 277.818s234.182 104.786 234.182 234.182-104.786 234.182-234.182 234.182z" fill="currentColor"/>
+                <path d="M512 341.333c-94.117 0-170.667 76.55-170.667 170.667S417.883 682.667 512 682.667s170.667-76.55 170.667-170.667-76.55-170.667-170.667-170.667z m0 256c-47.059 0-85.333-38.274-85.333-85.333s38.274-85.333 85.333-85.333 85.333 38.274 85.333 85.333-38.274 85.333-85.333 85.333z" fill="currentColor"/>
+                <path d="M960 512c0-247.424-200.576-448-448-448S64 264.576 64 512s200.576 448 448 448 448-200.576 448-448z m-85.333 0c0 200.085-162.581 362.667-362.667 362.667S147.333 712.085 147.333 512 309.915 149.333 512 149.333s362.667 162.581 362.667 362.667z" fill="currentColor"/>
+              </svg>
+              大模型识别
+            </span>
+          </label>
+
           <div class="footer-actions">
             <button class="secondary-btn icon-btn" :disabled="!displayResult" @click="copyResult">
               <span class="button-icon" aria-hidden="true">
@@ -409,11 +427,13 @@
 <script setup lang="ts">
 import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue'
 import {streamChat} from '@/api/chat'
+import Tesseract from 'tesseract.js'
 
 const OCR_APP_ID = import.meta.env.VITE_APP_ID as string | undefined
 const USER_ID = import.meta.env.VITE_USER_ID || 'default-user'
 
 type RecognitionMode = 'text' | 'table' | 'formula' | 'custom'
+type RecognitionScheme = 'tesseract' | 'vision-model'
 
 interface CustomInstruction {
   id: string
@@ -485,6 +505,12 @@ const showAddInstructionModal = ref(false)
 const newInstructionName = ref('')
 const newInstructionPrompt = ref('')
 const previewScale = ref(1)
+
+// 识别方案管理
+const currentScheme = ref<RecognitionScheme>('tesseract')  // 默认使用 Tesseract.js
+const tesseractResult = ref('')  // 存储 Tesseract 识别结果
+const isTesseractProcessing = ref(false)  // Tesseract 处理中
+const useVisionModel = ref(false)  // 是否使用大模型识别开关
 
 const processedResult = computed({
   get() {
@@ -642,13 +668,52 @@ const handleFileChange = async (event: Event) => {
   }
 }
 
-const startRecognition = async (file: File) => {
+// Tesseract.js 本地识别（方案1）
+const recognizeWithTesseract = async (file: File) => {
+  try {
+    isTesseractProcessing.value = true
+    ocrError.value = null
+    rawResult.value = ''
+    tesseractResult.value = ''
+    isUploading.value = false
+
+    const reader = new FileReader()
+    reader.onload = async (e) => {
+      try {
+        const result = await Tesseract.recognize(
+            e.target?.result as string,
+            'chi_sim+eng',  // 中文简体 + 英文
+            {
+              logger: (m) => {
+                // 可选：显示进度
+                console.log('Tesseract 进度:', m)
+              }
+            }
+        )
+        
+        tesseractResult.value = result.data.text
+        rawResult.value = result.data.text
+        isTesseractProcessing.value = false
+      } catch (error) {
+        console.error('Tesseract 识别失败', error)
+        ocrError.value = 'Tesseract 识别失败，请尝试使用大模型识别'
+        isTesseractProcessing.value = false
+      }
+    }
+    reader.readAsDataURL(file)
+  } catch (error) {
+    console.error('Tesseract 初始化失败', error)
+    ocrError.value = '本地识别初始化失败'
+    isTesseractProcessing.value = false
+  }
+}
+
+// 视觉大模型识别（方案2）
+const recognizeWithVisionModel = async (file: File) => {
   if (!OCR_APP_ID) {
     ocrError.value = '缺少 OCR 应用配置，请检查环境变量'
     return
   }
-
-  lastUploadedFile.value = file
 
   streamAbort.value?.()
   rawResult.value = ''
@@ -686,7 +751,7 @@ const startRecognition = async (file: File) => {
         },
         (error) => {
           console.error('OCR 请求失败', error)
-          ocrError.value = '识别过程中出现问题，请稍后重试'
+          ocrError.value = '视觉大模型识别失败，请稍后重试'
           isProcessing.value = false
           isUploading.value = false
           streamAbort.value = null
@@ -706,6 +771,17 @@ const startRecognition = async (file: File) => {
     ocrError.value = '无法发起识别请求，请稍后再试'
     isProcessing.value = false
     streamAbort.value = null
+  }
+}
+
+const startRecognition = async (file: File) => {
+  lastUploadedFile.value = file
+  
+  // 根据开关选择识别方案
+  if (useVisionModel.value) {
+    await recognizeWithVisionModel(file)
+  } else {
+    await recognizeWithTesseract(file)
   }
 }
 const copyResult = async () => {
@@ -1321,6 +1397,75 @@ onBeforeUnmount(() => {
   100% {
     content: '';
   }
+}
+
+/* 大模型识别开关 */
+.vision-model-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.vision-model-toggle input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 40px;
+  height: 24px;
+  background: #e5e7eb;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.3s ease;
+  flex-shrink: 0;
+}
+
+.vision-model-toggle input[type="checkbox"]:checked {
+  background: #3b82f6;
+}
+
+.vision-model-toggle input[type="checkbox"]::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  top: 2px;
+  left: 2px;
+  transition: left 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.vision-model-toggle input[type="checkbox"]:checked::before {
+  left: 18px;
+}
+
+.vision-model-toggle input[type="checkbox"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.vision-model-toggle .toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: #374151;
+  transition: color 0.2s ease;
+}
+
+.vision-model-toggle input[type="checkbox"]:checked + .toggle-label {
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.vision-model-toggle .icon {
+  width: 16px;
+  height: 16px;
 }
 
 @keyframes ocr-upload-indeterminate {
