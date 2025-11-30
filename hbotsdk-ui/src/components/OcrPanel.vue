@@ -19,7 +19,7 @@
                     />
                   </svg>
                 </span>
-                文字识别
+                文字识别助手
               </button>
             </div>
           </div>
@@ -301,27 +301,18 @@
             朗读
           </button>
 
-          <button
+          <label
               v-if="activeMode === 'text'"
-              class="secondary-btn toggle-newlines-btn"
-              type="button"
-              @click="removeNewlines = !removeNewlines"
+              class="vision-model-toggle toggle-newlines-btn"
           >
-            <span class="button-icon" aria-hidden="true">
-              <svg
-                  class="icon"
-                  viewBox="0 0 1024 1024"
-                  xmlns="http://www.w3.org/2000/svg"
-                  role="img"
-              >
-                <path
-                    d="M211.3 503.5h472.8c18.6 0 33.7-15.1 33.7-33.7v-2.5c0-18.6-15.1-33.7-33.7-33.7H211.3c-18.6 0-33.7 15.1-33.7 33.7v2.5c0 18.6 15.1 33.7 33.7 33.7zM211.3 312.7h557.8c18.6 0 33.7-15.1 33.7-33.7v-2.5c0-18.6-15.1-33.7-33.7-33.7H211.3c-18.6 0-33.7 15.1-33.7 33.7v2.5c0 18.6 15.1 33.7 33.7 33.7zM429.1 612.1H211.3c-18.6 0-33.7 15.1-33.7 33.7v2.5c0 18.6 15.1 33.7 33.7 33.7h217.8c18.6 0 33.7-15.1 33.7-33.7v-2.5c0-18.6-15.2-33.7-33.7-33.7zM812.7 473.3h-5.3c-18.6 0-33.7 15.1-33.7 33.7v121.5c0 1.9-1.6 3.5-3.5 3.5h-93.8v-64.2c0-5.8-3.3-11-8.5-13.6-5.2-2.5-11.3-1.9-15.9 1.6l-108.7 84.5c-7.1 5.5-11.6 13.5-12.7 22.4-1.1 8.9 1.3 17.8 6.9 24.9 1.7 2.2 3.7 4.1 5.9 5.8L652.1 778a15.17 15.17 0 0 0 15.9 1.7c5.2-2.5 8.5-7.8 8.5-13.6v-64.2h136.3c18.6 0 33.7-15.1 33.7-33.7V507c-0.1-18.6-15.2-33.7-33.8-33.7z"
-                    fill="currentColor"
-                />
-              </svg>
+            <input
+                type="checkbox"
+                v-model="removeNewlines"
+            />
+            <span class="toggle-label">
+              去除换行符
             </span>
-            去除换行
-          </button>
+          </label>
 
           <label class="vision-model-toggle">
             <input 
@@ -329,14 +320,7 @@
                 v-model="useVisionModel"
                 :disabled="isProcessing || isTesseractProcessing"
             />
-            <span class="toggle-label">
-              <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" role="img">
-                <path d="M512 192c-176.732 0-329.142 143.268-329.142 320s152.41 320 329.142 320 329.142-143.268 329.142-320-152.41-320-329.142-320z m0 554.182c-129.396 0-234.182-104.786-234.182-234.182S382.604 277.818 512 277.818s234.182 104.786 234.182 234.182-104.786 234.182-234.182 234.182z" fill="currentColor"/>
-                <path d="M512 341.333c-94.117 0-170.667 76.55-170.667 170.667S417.883 682.667 512 682.667s170.667-76.55 170.667-170.667-76.55-170.667-170.667-170.667z m0 256c-47.059 0-85.333-38.274-85.333-85.333s38.274-85.333 85.333-85.333 85.333 38.274 85.333 85.333-38.274 85.333-85.333 85.333z" fill="currentColor"/>
-                <path d="M960 512c0-247.424-200.576-448-448-448S64 264.576 64 512s200.576 448 448 448 448-200.576 448-448z m-85.333 0c0 200.085-162.581 362.667-362.667 362.667S147.333 712.085 147.333 512 309.915 149.333 512 149.333s362.667 162.581 362.667 362.667z" fill="currentColor"/>
-              </svg>
-              大模型识别
-            </span>
+            <span class="toggle-label">AI 识别</span>
           </label>
 
           <div class="footer-actions">
@@ -1294,11 +1278,7 @@ onBeforeUnmount(() => {
 }
 
 .toggle-newlines-btn {
-  display: inline-flex;
-  align-items: center;
   margin-left: 8px;
-  min-width: 96px;
-  justify-content: center;
 }
 
 .result-options {
@@ -1491,12 +1471,47 @@ onBeforeUnmount(() => {
   }
 }
 
+.upload-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.upload-footer .secondary-btn,
+.upload-footer .primary-btn {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.upload-footer .secondary-btn:hover,
+.upload-footer .primary-btn:hover {
+  background: transparent;
+}
+
 .result-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 8px 0 0;
   height: 56px;
+}
+
+.result-footer .secondary-btn,
+.result-footer .primary-btn {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.result-footer .secondary-btn:hover,
+.result-footer .primary-btn:hover {
+  background: transparent;
 }
 
 .footer-actions {
