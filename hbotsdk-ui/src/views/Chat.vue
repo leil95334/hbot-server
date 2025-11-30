@@ -515,39 +515,30 @@ const handleSend = async () => {
   abortController.value = await streamChat(
     params,
     (event) => {
-      // 处理流式消息，只处理 chunk 事件
-      const isChunkEvent = event.type === 'chunk' || event.data?.type === 'chunk'
-      
-      if (isChunkEvent && event.data?.payload?.text) {
-        const lane = event.data.lane
-        const text = event.data.payload.text as string
+      // 处理流式消息：兼容老格式 payload.text 和新格式 v 字段
+      const data = event.data || {}
+      const text: string | undefined =
+        (data.payload && typeof data.payload.text === 'string' ? data.payload.text : undefined) ??
+        (typeof data.v === 'string' ? data.v : undefined)
 
-        const messageIndex = messages.value.findIndex(m => m.id === assistantMessageId)
-        const targetMessage = messageIndex !== -1 ? messages.value[messageIndex] : null
-
-        // 当为语音地址通道时，不累积到 content，而是写入 audioUrl
-        if (lane === 'output_h0uzga_text_1') {
-          if (targetMessage) {
-            targetMessage.audioUrl = text
-            // 语音地址就绪时，如果之前还是 loading，则标记为 updating 以触发 UI 更新
-            if (!targetMessage.content) {
-              targetMessage.status = 'updating'
-            }
-          }
-        } else {
-          // 其它通道（包含文字内容）仍然累积到 content
-          accumulatedContent += text
-          
-          if (targetMessage) {
-            targetMessage.content = accumulatedContent
-            targetMessage.status = 'updating'
-          }
-        }
-
-        // 流式保存
-        debouncedSaveDuringStreaming()
-        scrollToBottom()
+      if (!text) {
+        return
       }
+
+      const messageIndex = messages.value.findIndex(m => m.id === assistantMessageId)
+      const targetMessage = messageIndex !== -1 ? messages.value[messageIndex] : null
+
+      // 新协议下没有 lane/audio 通道，直接把文本累积到 content 即可
+      accumulatedContent += text
+
+      if (targetMessage) {
+        targetMessage.content = accumulatedContent
+        targetMessage.status = 'updating'
+      }
+
+      // 流式保存
+      debouncedSaveDuringStreaming()
+      scrollToBottom()
     },
     (error) => {
       console.error('Chat error:', error)
