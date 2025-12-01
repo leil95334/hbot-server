@@ -871,7 +871,7 @@ onBeforeUnmount(() => {
   inset: 0;
   background: #626773;
   backdrop-filter: blur(3px);
-  z-index: 2000;
+  z-index: 900;
   display: flex;
   align-items: center;
   justify-content: center;

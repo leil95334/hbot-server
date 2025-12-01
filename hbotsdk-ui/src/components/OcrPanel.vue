@@ -736,7 +736,7 @@ const recognizeWithVisionModel = async (file: File) => {
         },
         (error) => {
           console.error('OCR 请求失败', error)
-          ocrError.value = '视觉大模型识别失败，请稍后重试'
+          ocrError.value = '大模型识别失败，请稍后重试'
           isProcessing.value = false
           isUploading.value = false
           streamAbort.value = null
