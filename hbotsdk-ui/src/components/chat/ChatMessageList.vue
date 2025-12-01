@@ -93,10 +93,37 @@ const chatListRef = ref<HTMLDivElement | null>(null)
 const currentAudio = ref<HTMLAudioElement | null>(null)
 const currentAudioMessageId = ref<string | null>(null)
 
+const copyTextToClipboard = async (text: string) => {
+  if (!text) return
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    await navigator.clipboard.writeText(text)
+    return
+  }
+
+  const textarea = document.createElement('textarea')
+  textarea.value = text
+  textarea.style.position = 'fixed'
+  textarea.style.opacity = '0'
+  textarea.style.left = '-9999px'
+  document.body.appendChild(textarea)
+  textarea.select()
+  try {
+    document.execCommand('copy')
+  } finally {
+    document.body.removeChild(textarea)
+  }
+}
+
 const handleCopy = (content: string) => {
-  navigator.clipboard.writeText(content).then(() => {
-    antMessage.success('已复制到剪贴板')
-  })
+  copyTextToClipboard(content)
+    .then(() => {
+      antMessage.success('已复制到剪贴板')
+    })
+    .catch((err) => {
+      console.error('复制失败', err)
+      antMessage.error('复制失败，请手动选择文本')
+    })
 }
 
 const playAudio = (msg: ChatMessage) => {

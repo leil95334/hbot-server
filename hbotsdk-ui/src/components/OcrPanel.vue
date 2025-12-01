@@ -324,7 +324,7 @@
           </label>
 
           <div class="footer-actions">
-            <button class="secondary-btn icon-btn" :disabled="!displayResult" @click="copyResult">
+            <button class="secondary-btn icon-btn" :disabled="!displayResult" @click="handleCopy">
               <span class="button-icon" aria-hidden="true">
                 <svg
                     class="icon"
@@ -410,6 +410,7 @@
 
 <script setup lang="ts">
 import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue'
+import { message as antMessage } from 'ant-design-vue'
 import {streamChat} from '@/api/chat'
 import Tesseract from 'tesseract.js'
 
@@ -670,7 +671,7 @@ const recognizeWithTesseract = async (file: File) => {
             {
               logger: (m) => {
                 // 可选：显示进度
-                console.log('Tesseract 进度:', m)
+                // console.log('Tesseract 进度:', m)
               }
             }
         )
@@ -771,17 +772,44 @@ const startRecognition = async (file: File) => {
 const copyResult = async () => {
   if (!displayResult.value) return
   try {
-    await navigator.clipboard.writeText(displayResult.value)
+    await copyTextToClipboard(displayResult.value)
+    antMessage.success('已复制到剪贴板')
   } catch (error) {
     console.error('复制失败', error)
     ocrError.value = '复制失败，请手动选择文本'
   }
 }
 
+const handleCopy = async () => {
+  await copyResult()
+}
+
 const openTranslate = () => {
   if (!displayResult.value) return
   const url = `https://fanyi.baidu.com/#zh/en/${encodeURIComponent(displayResult.value)}`
   window.open(url, '_blank', 'noopener')
+}
+
+const copyTextToClipboard = async (text: string) => {
+  if (!text) return
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    await navigator.clipboard.writeText(text)
+    return
+  }
+
+  const textarea = document.createElement('textarea')
+  textarea.value = text
+  textarea.style.position = 'fixed'
+  textarea.style.opacity = '0'
+  textarea.style.left = '-9999px'
+  document.body.appendChild(textarea)
+  textarea.select()
+  try {
+    document.execCommand('copy')
+  } finally {
+    document.body.removeChild(textarea)
+  }
 }
 
 const selectMode = async (mode: RecognitionMode) => {
