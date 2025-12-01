@@ -192,7 +192,7 @@
                     />
                   </svg>
                 </span>
-                自定义
+                定义指令
               </button>
             </div>
           </div>
@@ -492,10 +492,10 @@ const newInstructionPrompt = ref('')
 const previewScale = ref(1)
 
 // 识别方案管理
-const currentScheme = ref<RecognitionScheme>('tesseract')  // 默认使用 Tesseract.js
+const currentScheme = ref<RecognitionScheme>('vision-model')  // 默认使用大模型识别
 const tesseractResult = ref('')  // 存储 Tesseract 识别结果
 const isTesseractProcessing = ref(false)  // Tesseract 处理中
-const useVisionModel = ref(false)  // 是否使用大模型识别开关
+const useVisionModel = ref(true)  // 是否使用大模型识别开关，默认开启
 
 const processedResult = computed({
   get() {
