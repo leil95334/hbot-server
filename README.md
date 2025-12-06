@@ -63,45 +63,6 @@ npm run dev
 cd backend
 mvn spring-boot:run
 ```
-
-### 本地访问
-
-- 前端访问：http://localhost:8080
-- 后端服务：http://localhost:8000
-
-## 部署流程
-
-1. 构建前端
-
-    ```bash
-    cd frontend
-    npm run build
-    ```
-
-2. 构建后端
-
-    ```bash
-    cd backend
-    mvn package
-    java -jar target/hbot-server.jar
-    ```
-
-3. 可将前端打包结果部署至后端静态目录或独立静态服务器。
-
-## 贡献与反馈
-
-欢迎提交 issue 或 PR，一起优化 OCR 服务！  
-请参考 [CONTRIBUTING.md] 以保持代码风格一致。
-
-## 许可证
-
-MIT License，详见 [LICENSE](LICENSE)。
-
-## 联系方式
-
-- 项目主页：[https://github.com/leil95334/hbot-server](https://github.com/leil95334/hbot-server)
-- 作者：[@leil95334](https://github.com/leil95334)
-
 ---
 
 如果觉得 hbot-server 有用，欢迎 Star 或 Fork 支持我们！
